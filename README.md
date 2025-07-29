@@ -1,12 +1,66 @@
-# React + Vite
+# 🚀 Team Portfolio Management Dashboard – Frontend
 
-This template provides a minimal setup to get React working in Vite with HMR and some ESLint rules.
+This is the frontend of the **Team Portfolio Management Dashboard**, built using **React + Vite** with Sass for styling, and ESLint for code linting.
 
-Currently, two official plugins are available:
+---
 
-- [@vitejs/plugin-react](https://github.com/vitejs/vite-plugin-react/blob/main/packages/plugin-react) uses [Babel](https://babeljs.io/) for Fast Refresh
-- [@vitejs/plugin-react-swc](https://github.com/vitejs/vite-plugin-react/blob/main/packages/plugin-react-swc) uses [SWC](https://swc.rs/) for Fast Refresh
+## ⚙️ Tech Stack
 
-## Expanding the ESLint configuration
+- **React 19**
+- **Vite** (bundler)
+- **React Router v7**
+- **Sass** (CSS preprocessor)
+- **ESLint** (linting)
+- **JavaScript** (ESM, no TypeScript for now)
 
-If you are developing a production application, we recommend using TypeScript with type-aware lint rules enabled. Check out the [TS template](https://github.com/vitejs/vite/tree/main/packages/create-vite/template-react-ts) for information on how to integrate TypeScript and [`typescript-eslint`](https://typescript-eslint.io) in your project.
+---
+
+## 🧱 Project Structure
+
+```
+├── src/
+│   ├── components/         # Reusable UI components
+│   ├── pages/              # Page-level views (Login, Register, etc.)
+│   ├── constants/          # Static values (labels, configs, etc.)
+│   ├── styles/             # SCSS styles
+│   └── App.jsx             # Main application component
+├── public/                 # Static assets
+├── .gitignore              # Files Git should ignore
+├── vite.config.js          # Vite configuration
+└── README.md               # Project documentation
+```
+
+---
+
+## 🌿 Branching Strategy
+
+We follow a simple Git branching model to ensure clean, manageable code collaboration.
+
+- `dev` – ✅ Main development branch (default)
+- `feature/<feature-name>` – 🔧 New features or enhancements
+
+## 🛠️ Getting Started
+
+### 1. Clone the repository
+
+```bash
+git clone https://github.com/srimali12345/Team-Portfolio-Management-Dashboard-Frontend.git
+cd Team-Portfolio-Management-Dashboard-Frontend
+```
+
+### 2. Install dependencies
+
+```bash
+npm install
+```
+
+### 3. Run the development server
+
+```bash
+npm run dev
+```
+
+Visit `http://localhost:5173` to view the app in the browser.
+
+---
+
