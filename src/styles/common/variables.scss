@@ -1,0 +1,32 @@
+// Colors
+$primary-color: #6c63ff;
+$primary-dark: #5548c8;
+$primary-gradient: linear-gradient(90deg, #6c63ff 0%, #0984e3 100%);
+$primary-gradient-hover: linear-gradient(90deg, #5548c8 0%, #74b9ff 100%);
+
+$secondary-color: #0984e3;
+$secondary-bg: #dfe6e9;
+$secondary-bg-hover: #b2bec3;
+
+$text-primary: #2d3436;
+$text-secondary: #636e72;
+$text-error: #d63031;
+
+$input-bg: #f7fafd;
+$input-border: #dfe6e9;
+$input-focus-border: $primary-color;
+
+$bg-gradient: linear-gradient(135deg, #e0eafc 0%, #cfdef3 100%);
+$error-bg: #ffeaea;
+$white: #ffffff;
+
+// Font Sizes
+$font-size-base: 1rem;
+$font-size-lg: 2.2rem;
+$font-size-sm: 0.95rem;
+$font-size-xs: 0.9rem;
+
+// Font Weights
+$font-weight-normal: 500;
+$font-weight-bold: 700;
+$font-weight-semi-bold: 600;

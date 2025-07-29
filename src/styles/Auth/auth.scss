@@ -1,38 +1,39 @@
+@import "../../styles/common/variables.scss";
+
 .main-container {
   display: flex;
   justify-content: center;
   align-items: center;
   min-height: 100vh;
-  background: linear-gradient(135deg, #e0eafc 0%, #cfdef3 100%);
+  background: $bg-gradient;
 }
 
 .auth-container {
-  background: #fff;
-  padding: 2.5rem 2.5rem;
+  background: $white;
+  padding: 2.5rem;
   border-radius: 18px;
   box-shadow: 0 8px 32px rgba(60, 60, 120, 0.12);
   width: 370px;
   display: flex;
   flex-direction: column;
   align-items: stretch;
-  transition: box-shadow 0.2s;
-}
 
-.auth-container:hover {
-  box-shadow: 0 12px 40px rgba(60, 60, 120, 0.18);
+  &:hover {
+    box-shadow: 0 12px 40px rgba(60, 60, 120, 0.18);
+  }
 }
 
 .auth-title {
-  color: #2d3436;
-  font-size: 2.2rem;
-  font-weight: 700;
+  color: $text-primary;
+  font-size: $font-size-lg;
+  font-weight: $font-weight-bold;
   margin-bottom: 0.5rem;
   letter-spacing: 1px;
   text-align: center;
 }
 
 .auth-subtitle {
-  color: #636e72;
+  color: $text-secondary;
   font-size: 1.05rem;
   margin-bottom: 1.5rem;
   text-align: center;
@@ -45,27 +46,26 @@
 }
 
 .auth-label {
-  font-weight: 500;
+  font-weight: $font-weight-normal;
   margin-bottom: 0.25rem;
-  color: #636e72;
-  font-size: 1rem;
+  color: $text-secondary;
+  font-size: $font-size-base;
 }
 
 input {
   padding: 0.85rem;
-  border: 1px solid #dfe6e9;
+  border: 1px solid $input-border;
   border-radius: 10px;
   margin-bottom: 0.5rem;
-  font-size: 1rem;
-  background: #f7fafd;
-  transition: border-color 0.2s, box-shadow 0.2s;
+  font-size: $font-size-base;
+  background: $input-bg;
   box-shadow: 0 1px 2px rgba(60, 60, 120, 0.04);
-}
 
-input:focus {
-  border-color: #6c63ff;
-  outline: none;
-  box-shadow: 0 2px 8px rgba(108, 99, 255, 0.08);
+  &:focus {
+    border-color: $input-focus-border;
+    outline: none;
+    box-shadow: 0 2px 8px rgba(108, 99, 255, 0.08);
+  }
 }
 
 .default-button,
@@ -73,35 +73,33 @@ input:focus {
   padding: 0.85rem;
   border-radius: 10px;
   border: none;
-  font-size: 1rem;
+  font-size: $font-size-base;
   margin-bottom: 0.5rem;
   cursor: pointer;
-  transition: background 0.2s, box-shadow 0.2s;
-  font-weight: 600;
-  box-shadow: 0 2px 8px rgba(60, 60, 120, 0.04);
-}
-
-.default-button {
-  background: linear-gradient(90deg, #6c63ff 0%, #0984e3 100%);
-  color: #fff;
-  width: 130px;
-  margin-right: 10px;
+  font-weight: $font-weight-semi-bold;
   box-shadow: 0 2px 8px rgba(108, 99, 255, 0.08);
 }
 
-.default-button:hover {
-  background: linear-gradient(90deg, #5548c8 0%, #74b9ff 100%);
-  box-shadow: 0 4px 16px rgba(108, 99, 255, 0.12);
+.default-button {
+  background: $primary-gradient;
+  color: $white;
+  width: 130px;
+  margin-right: 10px;
+
+  &:hover {
+    background: $primary-gradient-hover;
+    box-shadow: 0 4px 16px rgba(108, 99, 255, 0.12);
+  }
 }
 
 .secondary-button {
-  background: #dfe6e9;
-  color: #636e72;
+  background: $secondary-bg;
+  color: $text-secondary;
   width: 130px;
-}
 
-.secondary-button:hover {
-  background: #b2bec3;
+  &:hover {
+    background: $secondary-bg-hover;
+  }
 }
 
 .button-container {
@@ -112,26 +110,26 @@ input:focus {
 }
 
 .error-message {
-  color: #d63031;
+  color: $text-error;
   margin-bottom: 0.5rem;
-  font-size: 0.95rem;
+  font-size: $font-size-sm;
   text-align: center;
-  background: #ffeaea;
+  background: $error-bg;
   border-radius: 6px;
   padding: 0.5rem;
 }
 
 .forgot-password-container {
   text-align: right;
-  font-size: 0.9rem;
-  color: #636e72;
+  font-size: $font-size-xs;
+  color: $text-secondary;
   margin-bottom: 0.5rem;
 }
 
 .login-link-container {
   text-align: center;
-  font-size: 1rem;
-  color: #636e72;
+  font-size: $font-size-base;
+  color: $text-secondary;
 
   p {
     margin-bottom: 0.5rem;
@@ -140,16 +138,15 @@ input:focus {
 
 .login-btn {
   background: none;
-  color: #6c63ff;
+  color: $primary-color;
   border: none;
-  font-weight: 500;
+  font-weight: $font-weight-normal;
   cursor: pointer;
   margin-top: 0.5rem;
-  font-size: 1rem;
-  transition: color 0.2s;
-}
+  font-size: $font-size-base;
 
-.login-btn:hover {
-  color: #5548c8;
-  text-decoration: underline;
+  &:hover {
+    color: $primary-dark;
+    text-decoration: underline;
+  }
 }
