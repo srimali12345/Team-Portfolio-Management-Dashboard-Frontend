@@ -5,7 +5,6 @@ import classNames from "classnames";
 const CustomButton = ({
   children,
   type = "primary",
-  htmlType = "button",
   className = "",
   href,
   onClick,
@@ -16,7 +15,6 @@ const CustomButton = ({
   return (
     <Button
       type={type}
-      htmlType={htmlType}
       className={classNames("custom-button", className)}
       href={href}
       onClick={onClick}

@@ -1,5 +1,19 @@
+@import "../../styles/common/variables.scss";
+
 * {
   padding: 0;
   margin: 0;
   box-sizing: border-box;
+}
+.custom-button {
+  background-color: $secondary-bg;
+  color: $text-primary;
+  display: inline-flex;
+  align-items: center;
+  justify-content: center;
+  font-size: $font-size-base;
+  font-weight: $font-weight-bold;
+  border-radius: 6px;
+  cursor: pointer;
+  padding: 15px !important;
 }

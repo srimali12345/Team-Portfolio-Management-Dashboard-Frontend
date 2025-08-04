@@ -68,15 +68,11 @@ const LoginForm = ({
         </Form.Item>
 
         <div className="button-container">
-          <CustomButton htmlType="submit" className="secondary-button">
+          <CustomButton >
             {FORM_CONSTANTS.LOGIN.TITLE}
           </CustomButton>
 
-          <CustomButton
-            type="default"
-            className="default-button"
-            href="/register"
-          >
+          <CustomButton className="default-button" href="/register">
             {FORM_CONSTANTS.REGISTER.TITLE}
           </CustomButton>
         </div>

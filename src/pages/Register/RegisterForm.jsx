@@ -16,7 +16,6 @@ const RegisterForm = ({
   return (
     <Form
       name="register"
-      layout="vertical"
       onFinish={onFinish}
       onFinishFailed={(errorInfo) => {
         console.log("Failed:", errorInfo);
@@ -42,9 +41,7 @@ const RegisterForm = ({
         <CustomInput
           value={username}
           onChange={(e) => setUsername(e.target.value)}
-          type="text"
           placeholder={FORM_CONSTANTS.COMMON.USERNAME_LABEL}
-          autoComplete="off"
         />
       </Form.Item>
 
@@ -64,7 +61,6 @@ const RegisterForm = ({
           onChange={(e) => setEmail(e.target.value)}
           type="email"
           placeholder={FORM_CONSTANTS.COMMON.EMAIL_LABEL}
-          autoComplete="off"
         />
       </Form.Item>
       <Form.Item
@@ -87,7 +83,7 @@ const RegisterForm = ({
       </Form.Item>
 
       <div className="button-container">
-        <CustomButton className="secondary-button" htmlType="submit">
+        <CustomButton className="secondary-button">
           {FORM_CONSTANTS.REGISTER.TITLE}
         </CustomButton>
       </div>
