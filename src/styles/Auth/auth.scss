@@ -84,7 +84,6 @@ input {
   background: $primary-gradient;
   color: $white;
   width: 130px;
-  margin-right: 10px;
 
   &:hover {
     background: $primary-gradient-hover;
@@ -96,6 +95,7 @@ input {
   background: $secondary-bg;
   color: $text-secondary;
   width: 130px;
+  margin-right: 10px;
 
   &:hover {
     background: $secondary-bg-hover;

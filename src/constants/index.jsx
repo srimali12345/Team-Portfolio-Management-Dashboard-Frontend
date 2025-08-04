@@ -8,6 +8,9 @@ export const FORM_CONSTANTS = {
     ERROR_MESSAGE_PASSWORD: "Password is required.",
     ERROR_MESSAGE_EMAIL: "Email is required.",
     CONFIRM_PASSWORD_LABEL: "Confirm Password",
+    MESSAGE_USERNAME: "Please input your username!",
+    MESSAGE_EMAIL: "Please input your email!",
+    MESSAGE_PASSWORD: "Please input your password!",
   },
   LOGIN: {
     TITLE: "Login",
