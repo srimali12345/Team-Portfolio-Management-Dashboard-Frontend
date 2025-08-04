@@ -68,7 +68,7 @@ const LoginForm = ({
         </Form.Item>
 
         <div className="button-container">
-          <CustomButton >
+          <CustomButton className="secondary-button">
             {FORM_CONSTANTS.LOGIN.TITLE}
           </CustomButton>
 
