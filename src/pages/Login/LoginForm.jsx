@@ -9,8 +9,8 @@ const LoginForm = ({
   setUsername,
   setPassword,
   onFinish,
-  ref,
   validateMessages,
+  htmlType,
 }) => {
   return (
     <>
@@ -44,7 +44,6 @@ const LoginForm = ({
             value={username}
             onChange={(e) => setUsername(e.target.value)}
             placeholder={FORM_CONSTANTS.COMMON.USERNAME_LABEL}
-            ref={ref}
           />
         </Form.Item>
 
@@ -68,7 +67,7 @@ const LoginForm = ({
         </Form.Item>
 
         <div className="button-container">
-          <CustomButton className="secondary-button">
+          <CustomButton className="secondary-button" htmlType="submit">
             {FORM_CONSTANTS.LOGIN.TITLE}
           </CustomButton>
 

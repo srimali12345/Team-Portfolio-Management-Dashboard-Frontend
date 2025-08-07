@@ -2,7 +2,6 @@ import React from "react";
 import { FORM_CONSTANTS } from "../../constants";
 import RegisterForm from "./RegisterForm";
 import CustomButton from "../../components/CustomButton";
-import "../../styles/auth/auth.scss";
 
 const Register = () => {
   const [username, setUsername] = React.useState("");

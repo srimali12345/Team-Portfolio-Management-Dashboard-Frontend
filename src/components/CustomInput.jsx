@@ -8,7 +8,7 @@ const CustomInput = ({
   type = "text",
   placeholder = "",
   ispassword = false,
-  ref,
+  autoComplete = "off",
   ...rest
 }) => {
   const commonProps = {
@@ -17,7 +17,7 @@ const CustomInput = ({
     onChange,
     type,
     placeholder,
-    ref,
+    autoComplete,
     ...rest,
   };
 

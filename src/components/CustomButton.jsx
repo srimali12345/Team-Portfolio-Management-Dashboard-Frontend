@@ -10,6 +10,7 @@ const CustomButton = ({
   onClick,
   disabled = false,
   loading = false,
+  htmlType = "",
   ...rest
 }) => {
   return (
@@ -20,6 +21,7 @@ const CustomButton = ({
       onClick={onClick}
       disabled={disabled}
       loading={loading}
+      htmlType={htmlType}
       {...rest}
     >
       {children}

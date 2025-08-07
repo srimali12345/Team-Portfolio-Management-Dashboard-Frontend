@@ -1,47 +1,33 @@
 import { useRef, useState, useContext } from "react";
-import "../../styles/auth/auth.scss";
 import { FORM_CONSTANTS } from "../../constants";
 import { AuthContext } from "../../context/AuthProvider";
 import axios from "../../api/axios";
 import LoginForm from "./LoginForm";
 
-const LOGIN_URL = "/api";
+const LOGIN_URL = "http://localhost:8080/api/auth/login";
 
 const Login = () => {
   const [username, setUsername] = useState("");
   const [password, setPassword] = useState("");
   const [sucess, setSuccess] = useState(false);
-  const [err, setError] = useState("");
-  const { setAuth } = useContext(AuthContext);
-  const userRef = useRef();
-  const errRef = useRef();
 
   const handleSubmit = async (e) => {
     try {
-      const response = await axios.post(
-        LOGIN_URL,
-        JSON.stringify({ username, password }),
-        {
-          headers: { "Content-Type": "application/json" },
-          withCredentials: true,
-        }
-      );
-      console.log(JSON.stringify(response?.data));
-      const accestoken = response?.data?.accestoken;
-      const roles = response?.data?.roles;
-      setAuth(username, password, roles, accestoken);
+      const response = await axios.post(LOGIN_URL, { username, password });
+      console.log(response.data);
+      setSuccess(true);
       setUsername("");
       setPassword("");
-      setSuccess(true);
-    } catch (err) {
-      if (!err?.response) {
-        setError("No Server Response");
-      } else if (err.response?.status === 400) {
-        setError("Missing Username or Password");
-      } else if (err.response?.status === 401) {
-        setError("Unauthorized");
+    } catch (error) {
+      console.error("Login failed:", error);
+      if (!error?.response) {
+        console.log("No Server Response");
+      } else if (error.response?.status === 400) {
+        console.log("Missing Username or Password");
+      } else if (error.response?.status === 401) {
+        console.log("Unauthorized");
       } else {
-        setError("Login Failed");
+        console.log("Login Failed");
       }
     }
   };
@@ -68,7 +54,6 @@ const Login = () => {
             <p className="auth-subtitle">{FORM_CONSTANTS.LOGIN.SUBTITLE}</p>
 
             <LoginForm
-              ref={userRef}
               validateMessages={validateMessages}
               username={username}
               password={password}
