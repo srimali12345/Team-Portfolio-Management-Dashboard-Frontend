@@ -25,6 +25,26 @@ const RegisterForm = ({
       requiredMark={true}
       validateMessages={validateMessages}
     >
+       <Form.Item
+        label={FORM_CONSTANTS.COMMON.NAME}
+        name={FORM_CONSTANTS.COMMON.NAME}
+        rules={[
+          {
+            required: true,
+            message: FORM_CONSTANTS.COMMON.MESSAGE_NAME,
+            type: "string",
+            min: 3,
+            max: 20,
+          },
+        ]}
+      >
+        <CustomInput
+          value={username}
+          onChange={(e) => setUsername(e.target.value)}
+          placeholder={FORM_CONSTANTS.COMMON.NAME}
+        />
+      </Form.Item>
+      
       <Form.Item
         label={FORM_CONSTANTS.COMMON.USERNAME_LABEL}
         name={FORM_CONSTANTS.COMMON.USERNAME_LABEL}
