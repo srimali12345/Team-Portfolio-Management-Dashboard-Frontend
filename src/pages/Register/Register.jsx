@@ -1,4 +1,4 @@
-import React,{useState} from "react";
+import React, { useState } from "react";
 import { FORM_CONSTANTS } from "../../constants";
 import RegisterForm from "./RegisterForm";
 import CustomButton from "../../components/CustomButton";
@@ -11,44 +11,46 @@ const Register = () => {
   const [username, setUsername] = useState("");
   const [email, setEmail] = useState("");
   const [password, setPassword] = useState("");
-  const [name , setName]=useState('')
-  const navigate =useNavigate();
+  const [name, setName] = useState("");
+  const navigate = useNavigate();
 
-  const handleSubmit =  async (e) => {
-    try{
-      const response = await axios.post("http://localhost:8080/api/auth/register", {
-        username,
-        email,
-        name,
-        password
-      },
-     { headers: { "Content-Type": "application/json" } }
-    );
-      
+  const handleSubmit = async (e) => {
+    if (!username || !name || !email || !password) {
+      if (!username && toast.error("Username is required"));
+      if (!name && toast.error("Name is required"));
+      if (!email && toast.error("Email is invalid"));
+      if (!password && toast.error("Password is not valid")) return;
+    }
+    try {
+      const response = await axios.post(
+        "http://localhost:8080/api/auth/register",
+        {
+          username,
+          email,
+          name,
+          password,
+        },
+        { headers: { "Content-Type": "application/json" } }
+      );
+
       setUsername("");
       setEmail("");
       setPassword("");
       setName("");
       console.log("Registration successful:", response.data);
-      toast.success("Registration successful! You can now log in.")
-      navigate('/login')
-    } catch(error){
+      toast.success("Registration successful! You can now log in.");
+      navigate("/login");
+    } catch (error) {
       if (!error?.response) {
         console.log("No Server Response");
-    }else if(!email || !password){
-         if(!email && toast.error("Email is invalid"));
-         if (!password && toast.error("Password is not valid"));
-    }
-    
-    else if (error.response?.status === 400) {
-        console.log("Missing Username, Email or Password");
       } else if (error.response?.status === 409) {
-        console.log("Username or Email already exists");
+        toast.error("Username or Email already exists.");
       } else {
-        console.log("Registration Failed", error);
+        toast.error("Registration failed. Please try again.");
+        console.error("Registration Failed", error);
       }
-  }
-}
+    }
+  };
   const validateMessages = {
     required: "${label} is required!",
     types: {
@@ -67,8 +69,8 @@ const Register = () => {
       </div>
       <div className="auth-container">
         <div className="logo-container">
-             <img src={logo} className="logo"/>
-                  </div>
+          <img src={logo} className="logo" />
+        </div>
         <h1 className="auth-title">{FORM_CONSTANTS.REGISTER.TITLE}</h1>
         <p className="auth-subtitle">{FORM_CONSTANTS.REGISTER.SUBTITLE}</p>
         <RegisterForm
