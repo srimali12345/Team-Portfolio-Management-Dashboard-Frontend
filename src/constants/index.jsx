@@ -11,7 +11,6 @@ export const FORM_CONSTANTS = {
     MESSAGE_USERNAME: "Please input your username!",
     MESSAGE_EMAIL: "Please input your email!",
     MESSAGE_PASSWORD: "Please input your password!",
-    MESSAGE_PASSWORD: "Please input your password!",
     MESSAGE_NAME: "Please input your Name!",
     NAME:"Name"
   },

@@ -10,7 +10,6 @@ const LoginForm = ({
   setPassword,
   onFinish,
   validateMessages,
-  htmlType,
 }) => {
   return (
     <>

@@ -1,8 +1,9 @@
-import { useRef, useState, useContext } from "react";
-import { FORM_CONSTANTS } from "../../constants";
-import { AuthContext } from "../../context/AuthProvider";
+import { useState } from "react";
 import axios from "../../api/axios";
+import toast from 'react-hot-toast';
 import LoginForm from "./LoginForm";
+import logo from "../../assets/auth.png";
+import { FORM_CONSTANTS } from "../../constants";
 
 const LOGIN_URL = "http://localhost:8080/api/auth/login";
 
@@ -18,12 +19,16 @@ const Login = () => {
       setSuccess(true);
       setUsername("");
       setPassword("");
+      console.log("Login successful:", response.data);
+      toast.success("Login successful!");
+     
     } catch (error) {
-      console.error("Login failed:", error);
+      toast.error("Login failed:", error)
+    
       if (!error?.response) {
-        console.log("No Server Response");
+       toast.error("No server response", error)
       } else if (error.response?.status === 400) {
-        console.log("Missing Username or Password");
+        console.log("Missing Username or Password", error);
       } else if (error.response?.status === 401) {
         console.log("Unauthorized");
       } else {
@@ -45,11 +50,17 @@ const Login = () => {
 
   return (
     <div className="main-container">
+      <div className="login-background">
+        <div className="background-overlay"></div>
+      </div>
       <div className="auth-container">
         {sucess ? (
           <h1 className="auth-title">You are Sucessfully loged In</h1>
         ) : (
           <>
+          <div className="logo-container">
+     <img src={logo} className="logo"/>
+          </div>
             <h1 className="auth-title">{FORM_CONSTANTS.LOGIN.TITLE}</h1>
             <p className="auth-subtitle">{FORM_CONSTANTS.LOGIN.SUBTITLE}</p>
 

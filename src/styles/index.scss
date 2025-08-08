@@ -1,3 +1,4 @@
-@import '../styles/common/style.scss';
-@import '../styles/common/antstyles.scss';
-@import "../styles/auth/auth.scss";
+@use "../styles/common/variables.scss" as *;
+@use '../styles/common/style.scss' as * ;
+@use '../styles/common/antstyles.scss' as *;
+@use "../styles/auth/auth.scss" as *; 

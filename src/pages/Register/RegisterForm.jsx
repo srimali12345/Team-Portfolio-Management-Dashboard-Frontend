@@ -7,6 +7,8 @@ const RegisterForm = ({
   username,
   setUsername,
   email,
+  name,
+  setName,
   setEmail,
   password,
   setPassword,
@@ -39,8 +41,8 @@ const RegisterForm = ({
         ]}
       >
         <CustomInput
-          value={username}
-          onChange={(e) => setUsername(e.target.value)}
+          value={name}
+          onChange={(e) => setName(e.target.value)}
           placeholder={FORM_CONSTANTS.COMMON.NAME}
         />
       </Form.Item>
