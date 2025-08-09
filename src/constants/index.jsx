@@ -3,6 +3,7 @@ export const FORM_CONSTANTS = {
     USERNAME_LABEL: "Username",
     PASSWORD_LABEL: "Password",
     EMAIL_LABEL: "Email",
+    USER_TYPE: "User Type",
     ERROR_MESSAGE: "All fields are required.",
     ERROR_MESSAGE_USERNAME: "Username is required.",
     ERROR_MESSAGE_PASSWORD: "Password is required.",
@@ -11,6 +12,7 @@ export const FORM_CONSTANTS = {
     MESSAGE_USERNAME: "Please input your username!",
     MESSAGE_EMAIL: "Please input your email!",
     MESSAGE_PASSWORD: "Please input your password!",
+    MESSAGE_USER_TYPE: "Please select a user type!",
     MESSAGE_NAME: "Please input your Name!",
     NAME:"Name"
   },

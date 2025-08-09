@@ -1,9 +1,10 @@
 import { useState } from "react";
 import axios from "../../api/axios";
-import toast from 'react-hot-toast';
+import toast from "react-hot-toast";
 import LoginForm from "./LoginForm";
 import logo from "../../assets/auth.png";
 import { FORM_CONSTANTS } from "../../constants";
+import { useNavigate } from "react-router-dom";
 
 const LOGIN_URL = "http://localhost:8080/api/auth/login";
 
@@ -11,42 +12,53 @@ const Login = () => {
   const [username, setUsername] = useState("");
   const [password, setPassword] = useState("");
   const [sucess, setSuccess] = useState(false);
+  const [role, setRole] = useState("");
+  const navigate = useNavigate();
 
   const handleSubmit = async (e) => {
+    if (!username || !password || !role) {
+      if (!username) toast.error("Username is required");
+      if (!password) toast.error("Password is required");
+      if (!role) toast.error("Role is required");
+      return;
+    }
     try {
-      const response = await axios.post(LOGIN_URL, { username, password });
+      const response = await axios.post(LOGIN_URL, {
+        username,
+        password,
+        role,
+      });
       console.log(response.data);
       setSuccess(true);
       setUsername("");
       setPassword("");
+      setRole(response.data.role);
       console.log("Login successful:", response.data);
       toast.success("Login successful!");
-     
+       navigate("/dashboard");
     } catch (error) {
-      toast.error("Login failed:", error)
-    
       if (!error?.response) {
-       toast.error("No server response", error)
-      } else if (error.response?.status === 400) {
-        console.log("Missing Username or Password", error);
+        toast.error("No server response");
       } else if (error.response?.status === 401) {
-        console.log("Unauthorized");
+        toast.error("Invalid username or password");
+      } else if (error.response?.status === 403) {
+        toast.error("Invalid role");
       } else {
-        console.log("Login Failed");
+        toast.error("Login failed");
       }
     }
   };
 
-  const validateMessages = {
-    required: "${label} is required!",
-    types: {
-      email: "${label} is not a valid email!",
-      password: "${label} is not a valid password!",
-    },
-    string: {
-      range: "${label} must be between ${min} and ${max}",
-    },
-  };
+  // const validateMessages = {
+  //   required: "${label} is required!",
+  //   types: {
+  //     email: "${label} is not a valid email!",
+  //     password: "${label} is not a valid password!",
+  //   },
+  //   string: {
+  //     range: "${label} must be between ${min} and ${max}",
+  //   },
+  // };
 
   return (
     <div className="main-container">
@@ -58,19 +70,21 @@ const Login = () => {
           <h1 className="auth-title">You are Sucessfully loged In</h1>
         ) : (
           <>
-          <div className="logo-container">
-     <img src={logo} className="logo"/>
-          </div>
+            <div className="logo-container">
+              <img src={logo} className="logo" />
+            </div>
             <h1 className="auth-title">{FORM_CONSTANTS.LOGIN.TITLE}</h1>
             <p className="auth-subtitle">{FORM_CONSTANTS.LOGIN.SUBTITLE}</p>
 
             <LoginForm
-              validateMessages={validateMessages}
+              // validateMessages={validateMessages}
               username={username}
               password={password}
+              role={role}
               setUsername={setUsername}
               setPassword={setPassword}
               onFinish={handleSubmit}
+              setRole={setRole}
             />
           </>
         )}

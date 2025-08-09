@@ -1,20 +1,24 @@
 import React from "react";
 import { FORM_CONSTANTS } from "../../constants";
-import { Form } from "antd";
+import { Form,Select} from "antd";
 import CustomInput from "../../components/CustomInput";
 import CustomButton from "../../components/CustomButton";
 const RegisterForm = ({
   username,
-  setUsername,
   email,
   name,
+  password,
+  role,
+  setRole,
   setName,
   setEmail,
-  password,
+  setUsername,
   setPassword,
   onFinish,
   validateMessages,
+  
 }) => {
+  const {Option}= Select
   return (
     <Form
       name="register"
@@ -102,6 +106,22 @@ const RegisterForm = ({
           onChange={(e) => setPassword(e.target.value)}
           placeholder={FORM_CONSTANTS.COMMON.PASSWORD_LABEL}
         />
+      </Form.Item>
+        <Form.Item
+        name={FORM_CONSTANTS.COMMON.USER_TYPE}
+        label={FORM_CONSTANTS.COMMON.USER_TYPE}
+        initialValue={'Viewer'}
+        rules={[
+          {
+            required: true,
+            message: FORM_CONSTANTS.COMMON.MESSAGE_USER_TYPE,
+          },
+        ]}
+      >
+        <Select placeholder="Select user type" value={role} onChange={(value)=>setRole(value)}>
+              <Option value="admin">Admin</Option>
+              <Option value="viewer">Viewer</Option>
+            </Select>
       </Form.Item>
 
       <div className="button-container">

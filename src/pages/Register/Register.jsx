@@ -12,14 +12,22 @@ const Register = () => {
   const [email, setEmail] = useState("");
   const [password, setPassword] = useState("");
   const [name, setName] = useState("");
+  const [role, setRole]=useState("");
   const navigate = useNavigate();
 
   const handleSubmit = async (e) => {
-    if (!username || !name || !email || !password) {
+    if (!username || !name || !email || !password || !role) {
+      e.preventDefault();
+      toast.error("Please fill in all fields.");
+      if (!email.includes("@") && toast.error("Email is invalid"));
+      if (!password || password.length < 6 && toast.error("Password must be at least 6 characters long"));
+
       if (!username && toast.error("Username is required"));
       if (!name && toast.error("Name is required"));
       if (!email && toast.error("Email is invalid"));
-      if (!password && toast.error("Password is not valid")) return;
+      if (!password && toast.error("Password is not valid"))
+      if (!role && toast.error("User type is required"));
+        return;
     }
     try {
       const response = await axios.post(
@@ -29,6 +37,7 @@ const Register = () => {
           email,
           name,
           password,
+          role,
         },
         { headers: { "Content-Type": "application/json" } }
       );
@@ -37,6 +46,7 @@ const Register = () => {
       setEmail("");
       setPassword("");
       setName("");
+      setRole("");
       console.log("Registration successful:", response.data);
       toast.success("Registration successful! You can now log in.");
       navigate("/login");
@@ -79,6 +89,8 @@ const Register = () => {
           username={username}
           email={email}
           password={password}
+          role={role}
+          setRole={setRole}
           setName={setName}
           onFinish={handleSubmit}
           setUsername={setUsername}
