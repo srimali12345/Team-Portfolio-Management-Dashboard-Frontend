@@ -1,7 +1,7 @@
 import { useState } from "react";
 import axios from "../../api/axios";
 import toast from "react-hot-toast";
-import LoginForm from "./LoginForm";
+import LoginForm from "./authFormLogin";
 import logo from "../../assets/auth.png";
 import { FORM_CONSTANTS } from "../../constants";
 import { useNavigate } from "react-router-dom";
@@ -35,7 +35,7 @@ const Login = () => {
       setRole(response.data.role);
       console.log("Login successful:", response.data);
       toast.success("Login successful!");
-       navigate("/dashboard");
+      navigate("/dashboard");
     } catch (error) {
       if (!error?.response) {
         toast.error("No server response");
@@ -48,18 +48,6 @@ const Login = () => {
       }
     }
   };
-
-  // const validateMessages = {
-  //   required: "${label} is required!",
-  //   types: {
-  //     email: "${label} is not a valid email!",
-  //     password: "${label} is not a valid password!",
-  //   },
-  //   string: {
-  //     range: "${label} must be between ${min} and ${max}",
-  //   },
-  // };
-
   return (
     <div className="main-container">
       <div className="login-background">
@@ -77,7 +65,6 @@ const Login = () => {
             <p className="auth-subtitle">{FORM_CONSTANTS.LOGIN.SUBTITLE}</p>
 
             <LoginForm
-              // validateMessages={validateMessages}
               username={username}
               password={password}
               role={role}

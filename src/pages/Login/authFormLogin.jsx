@@ -1,8 +1,8 @@
 import React from "react";
 import { FORM_CONSTANTS } from "../../constants";
 import { Form, Select } from "antd";
-import CustomInput from "../../components/CustomInput";
-import CustomButton from "../../components/CustomButton";
+import CustomInput from "../../components/inputComponent";
+import CustomButton from "../../components/buttonComponent";
 const LoginForm = ({
   username,
   password,

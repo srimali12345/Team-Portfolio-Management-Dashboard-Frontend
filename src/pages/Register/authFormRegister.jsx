@@ -1,8 +1,8 @@
 import React from "react";
 import { FORM_CONSTANTS } from "../../constants";
 import { Form,Select} from "antd";
-import CustomInput from "../../components/CustomInput";
-import CustomButton from "../../components/CustomButton";
+import CustomInput from "../../components/inputComponent";
+import CustomButton from "../../components/buttonComponent";
 const RegisterForm = ({
   username,
   email,
@@ -110,7 +110,6 @@ const RegisterForm = ({
         <Form.Item
         name={FORM_CONSTANTS.COMMON.USER_TYPE}
         label={FORM_CONSTANTS.COMMON.USER_TYPE}
-        initialValue={'Viewer'}
         rules={[
           {
             required: true,

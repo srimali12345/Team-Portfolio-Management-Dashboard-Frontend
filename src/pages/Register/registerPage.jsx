@@ -1,7 +1,7 @@
 import React, { useState } from "react";
 import { FORM_CONSTANTS } from "../../constants";
-import RegisterForm from "./RegisterForm";
-import CustomButton from "../../components/CustomButton";
+import RegisterForm from "./authFormRegister.jsx";
+import CustomButton from "../../components/buttonComponent.jsx";
 import axios from "../../api/axios";
 import { useNavigate } from "react-router-dom";
 import logo from "../../assets/auth.png";
@@ -12,7 +12,7 @@ const Register = () => {
   const [email, setEmail] = useState("");
   const [password, setPassword] = useState("");
   const [name, setName] = useState("");
-  const [role, setRole]=useState("");
+  const [role, setRole] = useState("");
   const navigate = useNavigate();
 
   const handleSubmit = async (e) => {
@@ -20,14 +20,18 @@ const Register = () => {
       e.preventDefault();
       toast.error("Please fill in all fields.");
       if (!email.includes("@") && toast.error("Email is invalid"));
-      if (!password || password.length < 6 && toast.error("Password must be at least 6 characters long"));
+      if (
+        !password ||
+        (password.length < 6 &&
+          toast.error("Password must be at least 6 characters long"))
+      );
 
       if (!username && toast.error("Username is required"));
       if (!name && toast.error("Name is required"));
       if (!email && toast.error("Email is invalid"));
       if (!password && toast.error("Password is not valid"))
-      if (!role && toast.error("User type is required"));
-        return;
+        if (!role && toast.error("User type is required"));
+      return;
     }
     try {
       const response = await axios.post(
@@ -61,17 +65,6 @@ const Register = () => {
       }
     }
   };
-  const validateMessages = {
-    required: "${label} is required!",
-    types: {
-      email: "${label} is not a valid email!",
-      password: "${label} is not a valid password!",
-    },
-    string: {
-      range: "${label} must be between ${min} and ${max}",
-    },
-  };
-
   return (
     <div className="main-container">
       <div className="login-background">
@@ -84,7 +77,6 @@ const Register = () => {
         <h1 className="auth-title">{FORM_CONSTANTS.REGISTER.TITLE}</h1>
         <p className="auth-subtitle">{FORM_CONSTANTS.REGISTER.SUBTITLE}</p>
         <RegisterForm
-          validateMessages={validateMessages}
           name={name}
           username={username}
           email={email}
