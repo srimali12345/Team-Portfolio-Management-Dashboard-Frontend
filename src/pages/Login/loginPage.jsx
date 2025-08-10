@@ -54,27 +54,21 @@ const Login = () => {
         <div className="background-overlay"></div>
       </div>
       <div className="auth-container">
-        {sucess ? (
-          <h1 className="auth-title">You are Sucessfully loged In</h1>
-        ) : (
-          <>
-            <div className="logo-container">
-              <img src={logo} className="logo" />
-            </div>
-            <h1 className="auth-title">{FORM_CONSTANTS.LOGIN.TITLE}</h1>
-            <p className="auth-subtitle">{FORM_CONSTANTS.LOGIN.SUBTITLE}</p>
+        <div className="logo-container">
+          <img src={logo} className="logo" />
+        </div>
+        <h1 className="auth-title">{FORM_CONSTANTS.LOGIN.TITLE}</h1>
+        <p className="auth-subtitle">{FORM_CONSTANTS.LOGIN.SUBTITLE}</p>
 
-            <LoginForm
-              username={username}
-              password={password}
-              role={role}
-              setUsername={setUsername}
-              setPassword={setPassword}
-              onFinish={handleSubmit}
-              setRole={setRole}
-            />
-          </>
-        )}
+        <LoginForm
+          username={username}
+          password={password}
+          role={role}
+          setUsername={setUsername}
+          setPassword={setPassword}
+          onFinish={handleSubmit}
+          setRole={setRole}
+        />
       </div>
     </div>
   );

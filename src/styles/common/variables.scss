@@ -3,6 +3,7 @@ $primary-color: #6c63ff;
 $primary-dark: #5548c8;
 $primary-gradient: linear-gradient(90deg, #6c63ff 0%, #0984e3 100%);
 $primary-gradient-hover: linear-gradient(90deg, #5548c8 0%, #74b9ff 100%);
+$common-primary: #1890ff;
 
 $secondary-color: #0984e3;
 $secondary-bg: #dfe6e9;
@@ -10,15 +11,24 @@ $secondary-bg-hover: #b2bec3;
 
 $text-primary: #2d3436;
 $text-secondary: #636e72;
+$text-secondary-dark-gray: #595959;
 $text-error: #d63031;
 
 $input-bg: #f7fafd;
 $input-border: #dfe6e9;
-$input-focus-border: $primary-color;
+$input-focus-border:#6c63ff;
+
+$border-light:#f0f0f0;
+$border-dark: #dfe6e9;
 
 $bg-gradient: linear-gradient(135deg, #e0eafc 0%, #cfdef3 100%);
 $error-bg: #ffeaea;
 $white: #ffffff;
+$bg-secondary: #f5f5f5;
+$bg-gray:#8c8c8c;
+
+
+
 
 // Font Sizes
 $font-size-base: 1rem;
