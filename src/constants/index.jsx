@@ -1,3 +1,5 @@
+import Title from "antd/es/skeleton/Title";
+
 export const FORM_CONSTANTS = {
   COMMON: {
     USERNAME_LABEL: "Username",
@@ -14,7 +16,7 @@ export const FORM_CONSTANTS = {
     MESSAGE_PASSWORD: "Please input your password!",
     MESSAGE_USER_TYPE: "Please select a user type!",
     MESSAGE_NAME: "Please input your Name!",
-    NAME:"Name"
+    NAME: "Name"
   },
   LOGIN: {
     TITLE: "Login",
@@ -26,4 +28,17 @@ export const FORM_CONSTANTS = {
     SUBTITLE: "Create a new account to get started.",
     CONFIRM_PASSWORD_LABEL: "Confirm Password",
   },
+};
+
+export const DASHBOARD_CONSTANTS = {
+  TITLE: "Dashboard Overview",
+  RECENT_PROJECTS: "Recent Projects",
+  AVAILABLE_TEAM_MEMBERS: "Available Team Members",
+  VIEW_ALL: "View All",
+  ASSIGN_TO_PROJECT: "Assign to Project",
+  PROGRESS_TEXT: "Progress",
+  ACTIVE_STATUS: "Active",
+  INACTIVE_STATUS: "Inactive",
+  TEAM_MEMBERS:'team members',
+  PRECENTAGE:'% complete'
 };

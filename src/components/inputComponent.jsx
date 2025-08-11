@@ -8,7 +8,10 @@ const CustomInput = ({
   type = "text",
   placeholder = "",
   ispassword = false,
+  isSearch = false,
+  isTextArea=false,
   autoComplete = "off",
+  rows='3',
   ...rest
 }) => {
   const commonProps = {
@@ -20,10 +23,11 @@ const CustomInput = ({
     autoComplete,
     ...rest,
   };
-
   return ispassword ? (
     <Input.Password {...commonProps} />
-  ) : (
+  ) : isSearch ? (
+    <Input.Search {...commonProps} />
+  ) : isTextArea ?(<Input.TextArea rows={rows} {...commonProps}/>) : (
     <Input {...commonProps} />
   );
 };

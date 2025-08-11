@@ -17,6 +17,7 @@ import {
   recentProjects,
   statusData,
 } from "../data/dashboardData";
+import { DASHBOARD_CONSTANTS } from "../constants";
 
 const { Title, Text } = Typography;
 
@@ -26,7 +27,7 @@ const Dashboard = () => {
   return (
     <div className="dashboard-content">
       <div className="page-header">
-        <Title level={2}>Dashboard Overview</Title>
+        <Title level={2}>{DASHBOARD_CONSTANTS.TITLE}</Title>
       </div>
 
       <Row gutter={[24, 24]} className="stats-section">
@@ -51,7 +52,7 @@ const Dashboard = () => {
             className="content-card"
             extra={
               <Button type="link" onClick={() => navigate("/projects")}>
-                View All
+          {DASHBOARD_CONSTANTS.VIEW_ALL}
               </Button>
             }
           >
@@ -64,7 +65,7 @@ const Dashboard = () => {
               >
                 <div className="project-info">
                   <Title level={5}>{project.name}</Title>
-                  <Text type="secondary">{project.team} team members</Text>
+                  <Text type="secondary">{project.team}{DASHBOARD_CONSTANTS.TEAM_MEMBERS}</Text>
                 </div>
                 <div className="project-status">
                   <Badge
@@ -74,7 +75,7 @@ const Dashboard = () => {
                     text={project.status}
                   />
                   <Text className="progress-text">
-                    {project.progress}% complete
+                    {project.progress} {DASHBOARD_CONSTANTS.PRECENTAGE}
                   </Text>
                 </div>
               </div>
@@ -88,7 +89,7 @@ const Dashboard = () => {
             className="content-card"
             extra={
               <Button type="link" onClick={() => navigate("/team-members")}>
-                View All
+              {DASHBOARD_CONSTANTS.VIEW_ALL}
               </Button>
             }
           >
@@ -113,7 +114,7 @@ const Dashboard = () => {
                       type="primary"
                       onClick={() => navigate("/team-members")}
                     >
-                      Assign to Project
+                      {DASHBOARD_CONSTANTS.ASSIGN_TO_PROJECT}
                     </Button>
                   </div>
                 </div>

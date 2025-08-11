@@ -7,6 +7,7 @@ import {
   UserOutlined,
   LogoutOutlined,
   TrophyOutlined,
+  ProjectTwoTone,
 } from "@ant-design/icons";
 import { Outlet, useNavigate } from "react-router-dom";
 const { Header, Sider, Content } = Layout;
@@ -44,8 +45,8 @@ const MainLayout = () => {
         className="dashboard-sider"
       >
         <div className="logo">
-          <TrophyOutlined />
-          {!collapsed && <span>Portfolio Manager</span>}
+         <ProjectTwoTone style={{ fontSize: "24px" }} />
+          {!collapsed && <span>1BT Portfolio Hub</span>}
         </div>
         <Menu
           theme="light"

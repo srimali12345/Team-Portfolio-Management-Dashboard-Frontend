@@ -30,6 +30,7 @@ const RegisterForm = ({
       className="auth-form"
       requiredMark={true}
       validateMessages={validateMessages}
+      layout="vertical"
     >
        <Form.Item
         label={FORM_CONSTANTS.COMMON.NAME}
