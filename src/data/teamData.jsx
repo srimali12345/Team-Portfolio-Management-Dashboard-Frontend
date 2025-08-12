@@ -15,7 +15,7 @@ export const roles = [
 
 export const projects = ["Seer", "Power Intel", "Million Space", "Auxillium"];
 
-export const getColumnsData = (handleDeleteMember) => [
+export const getColumnsData = (handleDeleteMember, handleAssignProject) => [
   {
     title: "Full Name",
     dataIndex: "name",
@@ -39,10 +39,13 @@ export const getColumnsData = (handleDeleteMember) => [
     key: "skills",
     render: (skills) => (
       <>
-       {Array.isArray(skills) ?
-        skills.map((skill,idx) => (
-      <Tag key={idx} color="blue">{skill}</Tag>
-    )) : null}
+        {Array.isArray(skills)
+          ? skills.map((skill, idx) => (
+              <Tag key={`${skill}-${idx}`} color="blue">
+                {skill}
+              </Tag>
+            ))
+          : null}
       </>
     ),
   },
@@ -63,7 +66,7 @@ export const getColumnsData = (handleDeleteMember) => [
     key: "status",
     render: (status) => (
       <Badge
-        status={status === "active" ? "processing" : "default"}
+        status={status === "active" ? "processing" : "warning"}
         text={status}
       />
     ),
@@ -73,30 +76,32 @@ export const getColumnsData = (handleDeleteMember) => [
     key: "actions",
     render: (_, record) => (
       <Space>
-        <Button onClick={()=>{
-
-          
-
-        }} type="link" icon={<EditOutlined />}>
+        <Button onClick={() => {}} type="link" icon={<EditOutlined />}>
           Edit
         </Button>
-        <Button onClick={()=>{
-          handleDeleteMember(record.id);
-
-        }} type="link" danger icon={<DeleteOutlined />}>
+        <Button
+          onClick={() => {
+            handleDeleteMember(record.id);
+          }}
+          type="link"
+          danger
+          icon={<DeleteOutlined />}
+        >
           Delete
         </Button>
-        {record.status === "Bench" && (
+
+        <Button type="link">Portfolio</Button>
+        {record.status === "bench" && (
           <Button
             type="primary"
+            onClick={() => {
+              handleAssignProject(record);
+            }}
           >
             Assign to Project
           </Button>
         )}
-        <Button type="link">Portfolio</Button>
       </Space>
     ),
   },
 ];
-
-

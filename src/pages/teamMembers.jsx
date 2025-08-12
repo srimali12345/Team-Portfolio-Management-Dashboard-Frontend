@@ -15,6 +15,8 @@ import CustomInput from "../components/inputComponent";
 import { projects, roles, getColumnsData } from "../data/teamData";
 import CustomButton from "../components/buttonComponent";
 import axios from "axios";
+import toast from "react-hot-toast";
+import { TEAM_MEMBERS_CONSTANT } from "../constants";
 const { Title } = Typography;
 const { Option } = Select;
 const TeamMembers = () => {
@@ -25,6 +27,7 @@ const TeamMembers = () => {
   const [isModalVisible, setIsModalVisible] = useState(false);
   const [isAssignModalVisible, setAssignModalVisible] = useState(false);
   const [editingMember, setEditingMember] = useState(null);
+  const [assigningMember, setAssigningMember] = useState(null);
 
   const [form] = Form.useForm();
   const [assignForm] = Form.useForm();
@@ -33,6 +36,7 @@ const TeamMembers = () => {
     setSelectedRole(null);
     setProject(null);
   };
+
   useEffect(() => {
     const fetchMember = async () => {
       try {
@@ -41,8 +45,10 @@ const TeamMembers = () => {
         );
         const allMembers = response.data.flatMap((doc) => doc.members);
         const mapData = allMembers.map((member, index) => ({
-          id: member.id || index + 1,
+          id: member._id || index + 1,
+          _id: member._id || member.id || null,
           name: member.name,
+          email: member.email,
           role: member.role,
           skills: Array.isArray(member.skills)
             ? member.skills
@@ -70,8 +76,6 @@ const TeamMembers = () => {
     setAssignModalVisible(false);
   };
 
-  
-
   const handleOk = () => {
     try {
       const fields = form.getFieldsValue();
@@ -84,11 +88,12 @@ const TeamMembers = () => {
           : Array.isArray(fields.skills)
           ? fields.skills
           : [];
-   
+
       const memberData = {
         ...fields,
         skills: skillsArray,
-        id: Date.now(),
+        currentProject: fields.currentProject || null,
+        status: fields.currentProject ? "active" : "bench",
       };
       axios.post(
         "http://localhost:8080/api/team/addMember",
@@ -96,8 +101,9 @@ const TeamMembers = () => {
 
         { headers: { "Content-Type": "application/json" } }
       );
-      console.log("Add Member Data", addmember);
+      console.log("Add Member Data", memberData);
       setIsModalVisible(false);
+      toast.success("Member added successfully!");
       setTeamMembers([...teamMembers, memberData]);
       form.resetFields();
     } catch (error) {
@@ -115,7 +121,9 @@ const TeamMembers = () => {
       content: "Are you sure you want to delete this member?",
       onOk: async () => {
         try {
-          await axios.delete(`http://localhost:8080/api/team/deleteMember/${id}`);
+          await axios.delete(
+            `http://localhost:8080/api/team/deleteMember/${id}`
+          );
           setTeamMembers(teamMembers.filter((member) => member.id !== id));
         } catch (error) {
           console.error("Error deleting member:", error);
@@ -124,8 +132,48 @@ const TeamMembers = () => {
     });
   };
 
-  const handleEditMember = (record) => {}
-    
+  const handleAssignProject = (member) => {
+    setAssigningMember(member);
+    setAssignModalVisible(true);
+  };
+
+  const handleAssignOk = async () => {
+    const values = assignForm.getFieldsValue();
+    const updatedMember = {
+      name: assigningMember.name,
+      email: assigningMember.email,
+      role: assigningMember.role,
+      skills: Array.isArray(assigningMember.skills)
+        ? assigningMember.skills
+        : typeof assigningMember.skills === "string"
+        ? assigningMember.skills.split(",").map((s) => s.trim())
+        : [],
+      currentProject: values.project,
+      status: "active",
+      _id: assigningMember._id,
+    };
+    try {
+      await axios.put(
+        `http://localhost:8080/api/team/updateMember/${assigningMember._id}`,
+        updatedMember,
+        { headers: { "Content-Type": "application/json" } }
+      );
+
+      setTeamMembers((prevMembers) =>
+        prevMembers.map((member) =>
+          member._id === assigningMember._id
+            ? { ...member, ...updatedMember }
+            : member
+        )
+      );
+      setAssignModalVisible(false);
+      assignForm.resetFields();
+      toast.success("Member assigned to project successfully!");
+    } catch (error) {
+      console.error("Error assigning project:", error);
+      toast.error("Failed to assign project.");
+    }
+  };
 
   const onFinish = (value) => {
     console.log("values are", value);
@@ -134,13 +182,13 @@ const TeamMembers = () => {
   return (
     <div className="dashboard-content">
       <div className="page-header">
-        <Title level={2}>Team Members</Title>
+        <Title level={2}>{TEAM_MEMBERS_CONSTANT.TITLE}</Title>
         <Button
           type="primary"
           icon={<PlusOutlined />}
           onClick={handleAddMember}
         >
-          Add Member
+          {TEAM_MEMBERS_CONSTANT.ADD_MEMBER}
         </Button>
       </div>
 
@@ -191,19 +239,18 @@ const TeamMembers = () => {
             </Select>
           </Col>
           <Col xs={24} sm={12} lg={6} xl={6}>
-            <CustomButton onClick={handleClear}>Clear</CustomButton>
+            <CustomButton onClick={handleClear}>
+              {TEAM_MEMBERS_CONSTANT.CLEAR}
+            </CustomButton>
           </Col>
         </Row>
       </Card>
 
       <Card>
         <Table
-          columns={
-            getColumnsData(handleDeleteMember)
-
-          }
+          columns={getColumnsData(handleDeleteMember, handleAssignProject)}
           dataSource={teamMembers}
-          rowKey="id"
+          rowKey={(record) => record._id || record.id}
           scroll={{ x: "max-content", y: 400 }}
           pagination={{
             pageSize: 10,
@@ -299,6 +346,7 @@ const TeamMembers = () => {
         title={`Assign member to Project`}
         open={isAssignModalVisible}
         onCancel={handleAssignCancel}
+        onOk={handleAssignOk}
         width={400}
       >
         <Form form={assignForm} layout="vertical" name="assignForm">
@@ -308,9 +356,9 @@ const TeamMembers = () => {
             rules={[{ required: true, message: "Please select a project!" }]}
           >
             <Select placeholder="Choose a project">
-              {projects.map((project) => (
-                <Option key={project} value={project}>
-                  {project}
+              {projects.map((currentProject) => (
+                <Option key={currentProject} value={currentProject}>
+                  {currentProject}
                 </Option>
               ))}
             </Select>

@@ -42,3 +42,9 @@ export const DASHBOARD_CONSTANTS = {
   TEAM_MEMBERS:'team members',
   PRECENTAGE:'% complete'
 };
+
+export const TEAM_MEMBERS_CONSTANT ={
+  TITLE:"Team Members",
+  ADD_MEMBER:"Add Member",
+  CLEAR:"Clear"
+}
