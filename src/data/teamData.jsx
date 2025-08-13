@@ -92,7 +92,7 @@ export const getColumnsData = (handleDeleteMember, handleAssignProject,handleEdi
           Delete
         </Button>
 
-        <Button type="link" onClick={handleViewPortfolio(record)}>Portfolio</Button>
+        <Button type="link" onClick={() => handleViewPortfolio(record)()}>Portfolio</Button>
         {record.status === "bench" && (
           <Button
             type="primary"
