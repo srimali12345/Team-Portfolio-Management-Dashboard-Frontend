@@ -1,4 +1,4 @@
-import React from "react";
+import React, { useEffect, useState } from "react";
 import {
   Button,
   Card,
@@ -9,13 +9,18 @@ import {
   Badge,
   Typography,
 } from "antd";
-import { UserOutlined } from "@ant-design/icons";
+import {
+  TeamOutlined,
+  ClockCircleOutlined,
+  UserOutlined,
+  ProjectOutlined,
+} from "@ant-design/icons";
 import { useNavigate } from "react-router-dom";
+import axios from "axios";
 import "../styles/Dashboard/dashboard.scss";
 import {
-  benchMembers,
   recentProjects,
-  statusData,
+  benchMembers as fallbackBench,
 } from "../data/dashboardData";
 import { DASHBOARD_CONSTANTS } from "../constants";
 
@@ -23,6 +28,60 @@ const { Title, Text } = Typography;
 
 const Dashboard = () => {
   const navigate = useNavigate();
+  const [stats, setStats] = useState({
+    totalMembers: 0,
+    activeMembers: 0,
+    benchMembers: 0,
+  });
+  const [benchList, setBenchList] = useState([]);
+
+  useEffect(() => {
+    const fetchStats = async () => {
+      try {
+        const res = await axios.get(
+          "http://localhost:8080/api/team/getMemberStats"
+        );
+        setStats(res.data);
+
+        const membersRes = await axios.get(
+          "http://localhost:8080/api/team/getMembers"
+        );
+        const members = membersRes.data[0].members || [];
+        setBenchList(members.filter((m) => m.status === "bench"));
+      } catch (err) {
+        console.error("Error fetching dashboard stats:", err);
+        setBenchList(fallbackBench);
+      }
+    };
+    fetchStats();
+  }, []);
+
+  const statusData = [
+    {
+      title: "Total Members",
+      value: stats.totalMembers,
+      color: "#1890ff",
+      icon: <TeamOutlined />,
+    },
+    {
+      title: "Active Members",
+      value: stats.activeMembers,
+      color: "#52c41a",
+      icon: <ClockCircleOutlined />,
+    },
+    {
+      title: "Bench Members",
+      value: stats.benchMembers,
+      color: "#fa8c16",
+      icon: <UserOutlined />,
+    },
+    {
+      title: "Active Projects",
+      value: 5,
+      color: "#52c41a",
+      icon: <ProjectOutlined />,
+    },
+  ];
 
   return (
     <div className="dashboard-content">
@@ -39,6 +98,7 @@ const Dashboard = () => {
                 value={status.value}
                 prefix={status.icon}
                 valueStyle={{ color: status.color }}
+                icon={status.icon}
               />
             </Card>
           </Col>
@@ -52,7 +112,7 @@ const Dashboard = () => {
             className="content-card"
             extra={
               <Button type="link" onClick={() => navigate("/projects")}>
-          {DASHBOARD_CONSTANTS.VIEW_ALL}
+                {DASHBOARD_CONSTANTS.VIEW_ALL}
               </Button>
             }
           >
@@ -65,7 +125,10 @@ const Dashboard = () => {
               >
                 <div className="project-info">
                   <Title level={5}>{project.name}</Title>
-                  <Text type="secondary">{project.team}{DASHBOARD_CONSTANTS.TEAM_MEMBERS}</Text>
+                  <Text type="secondary">
+                    {project.team}
+                    {DASHBOARD_CONSTANTS.TEAM_MEMBERS}
+                  </Text>
                 </div>
                 <div className="project-status">
                   <Badge
@@ -89,12 +152,12 @@ const Dashboard = () => {
             className="content-card"
             extra={
               <Button type="link" onClick={() => navigate("/team-members")}>
-              {DASHBOARD_CONSTANTS.VIEW_ALL}
+                {DASHBOARD_CONSTANTS.VIEW_ALL}
               </Button>
             }
           >
-            {benchMembers.map((member) => (
-              <div key={member.id} className="member-item">
+            {benchList.map((member) => (
+              <div key={member._id} className="member-item">
                 <Avatar icon={<UserOutlined />} />
                 <div className="member-info">
                   <Title level={5}>{member.name}</Title>
