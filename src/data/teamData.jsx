@@ -15,7 +15,7 @@ export const roles = [
 
 export const projects = ["Seer", "Power Intel", "Million Space", "Auxillium"];
 
-export const getColumnsData = (handleDeleteMember, handleAssignProject) => [
+export const getColumnsData = (handleDeleteMember, handleAssignProject,handleEditMember) => [
   {
     title: "Full Name",
     dataIndex: "name",
@@ -76,7 +76,9 @@ export const getColumnsData = (handleDeleteMember, handleAssignProject) => [
     key: "actions",
     render: (_, record) => (
       <Space>
-        <Button onClick={() => {}} type="link" icon={<EditOutlined />}>
+        <Button onClick={() => {
+          handleEditMember(record);
+        }} type="link" icon={<EditOutlined />}>
           Edit
         </Button>
         <Button

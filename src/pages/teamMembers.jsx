@@ -69,6 +69,8 @@ const TeamMembers = () => {
 
   const handleAddMember = () => {
     console.log("Add Member Clicked");
+    setEditingMember(null);
+    form.resetFields();
     setIsModalVisible(true);
   };
 
@@ -76,15 +78,17 @@ const TeamMembers = () => {
     setAssignModalVisible(false);
   };
 
-  const handleOk = () => {
+  const handleOk = async () => {
     try {
+      const isEdit = Boolean(editingMember);
+
       const fields = form.getFieldsValue();
       const skillsArray =
         typeof fields.skills === "string"
           ? fields.skills
               .split(",")
               .map((skill) => skill.trim())
-              .filter((skill) => skill)
+              .filter(Boolean)
           : Array.isArray(fields.skills)
           ? fields.skills
           : [];
@@ -95,24 +99,43 @@ const TeamMembers = () => {
         currentProject: fields.currentProject || null,
         status: fields.currentProject ? "active" : "bench",
       };
-      axios.post(
-        "http://localhost:8080/api/team/addMember",
-        memberData,
 
-        { headers: { "Content-Type": "application/json" } }
-      );
-      console.log("Add Member Data", memberData);
-      setIsModalVisible(false);
-      toast.success("Member added successfully!");
-      setTeamMembers([...teamMembers, memberData]);
+      if (isEdit) {
+        await axios.put(
+          `http://localhost:8080/api/team/updateMember/${editingMember._id}`,
+          memberData,
+          { headers: { "Content-Type": "application/json" } }
+        );
+
+        setTeamMembers((prev) =>
+          prev.map((m) =>
+            m._id === editingMember._id ? { ...m, ...memberData } : m
+          )
+        );
+
+        toast.success("Member updated successfully!");
+      } else {
+        const res = await axios.post(
+          "http://localhost:8080/api/team/addMember",
+          memberData,
+          { headers: { "Content-Type": "application/json" } }
+        );
+
+        setTeamMembers((prev) => [...prev, res.data || memberData]);
+        toast.success("Member added successfully!");
+      }
+      setEditingMember(null);
       form.resetFields();
+      setIsModalVisible(false);
     } catch (error) {
-      console.error("Error adding member:", error);
+      console.error("Error saving member:", error);
+      toast.error("Failed to save member. Please try again.");
     }
-    setIsModalVisible(false);
   };
 
   const handleCancel = () => {
+    form.resetFields();
+    setEditingMember(null);
     setIsModalVisible(false);
   };
   const handleDeleteMember = (id) => {
@@ -125,6 +148,7 @@ const TeamMembers = () => {
             `http://localhost:8080/api/team/deleteMember/${id}`
           );
           setTeamMembers(teamMembers.filter((member) => member.id !== id));
+          toast.success("Member Deleted Sucessfully");
         } catch (error) {
           console.error("Error deleting member:", error);
         }
@@ -173,6 +197,20 @@ const TeamMembers = () => {
       console.error("Error assigning project:", error);
       toast.error("Failed to assign project.");
     }
+  };
+
+  const handleEditMember = (member) => {
+    setEditingMember(member);
+    form.setFieldsValue({
+      name: member.name,
+      email: member.email,
+      role: member.role,
+      currentProject: member.currentProject || null,
+      skills: Array.isArray(member.skills)
+        ? member.skills.join(", ")
+        : member.skills,
+    });
+    setIsModalVisible(true);
   };
 
   const onFinish = (value) => {
@@ -248,7 +286,11 @@ const TeamMembers = () => {
 
       <Card>
         <Table
-          columns={getColumnsData(handleDeleteMember, handleAssignProject)}
+          columns={getColumnsData(
+            handleDeleteMember,
+            handleAssignProject,
+            handleEditMember
+          )}
           dataSource={teamMembers}
           rowKey={(record) => record._id || record.id}
           scroll={{ x: "max-content", y: 400 }}
