@@ -17,8 +17,10 @@ import CustomButton from "../components/buttonComponent";
 import axios from "axios";
 import toast from "react-hot-toast";
 import { TEAM_MEMBERS_CONSTANT } from "../constants";
+import { useNavigate } from "react-router-dom";
 const { Title } = Typography;
 const { Option } = Select;
+
 const TeamMembers = () => {
   const [selectedRole, setSelectedRole] = useState(null);
   const [currentProject, setProject] = useState(null);
@@ -28,6 +30,7 @@ const TeamMembers = () => {
   const [isAssignModalVisible, setAssignModalVisible] = useState(false);
   const [editingMember, setEditingMember] = useState(null);
   const [assigningMember, setAssigningMember] = useState(null);
+  const navigate = useNavigate();
 
   const [form] = Form.useForm();
   const [assignForm] = Form.useForm();
@@ -213,6 +216,14 @@ const TeamMembers = () => {
     setIsModalVisible(true);
   };
 
+  const handleViewPortfolio = (member) => () => {
+   navigate(`/portfolio/${member._id}`, {
+      state: {
+        member,
+      },
+    });
+  }
+
   const onFinish = (value) => {
     console.log("values are", value);
   };
@@ -289,7 +300,8 @@ const TeamMembers = () => {
           columns={getColumnsData(
             handleDeleteMember,
             handleAssignProject,
-            handleEditMember
+            handleEditMember,
+            handleViewPortfolio
           )}
           dataSource={teamMembers}
           rowKey={(record) => record._id || record.id}

@@ -159,6 +159,36 @@
           }
         }
       }
+
+      .portfolio-card {
+        border-radius: 10px;
+        padding: 20px;
+
+        .portfolio-header {
+          margin-bottom: 20px;
+        }
+
+        .portfolio-header-text {
+          display: flex;
+          flex-direction: column;
+        }
+
+        .portfolio-name {
+          margin-bottom: 0;
+        }
+
+        .portfolio-email {
+          margin-top: 5px;
+        }
+
+        .skill-tag {
+          margin-bottom: 5px;
+        }
+
+        .status-tag {
+          font-weight: 500;
+        }
+      }
     }
   }
 }

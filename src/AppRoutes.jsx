@@ -6,6 +6,7 @@ import Dashboard from "./pages/dashboard.jsx";
 import TeamMembers from "./pages/teamMembers.jsx";
 import Projects from "./pages/projects.jsx";
 import MainLayout from "./components/mainLayout.jsx";
+import PortfolioView from "./pages/portfolioView.jsx";
 
 const AppRoutes = () => {
   return (
@@ -18,6 +19,7 @@ const AppRoutes = () => {
           <Route path="/dashboard" element={<Dashboard />} />
           <Route path="/team-members" element={<TeamMembers />} />
           <Route path="/projects" element={<Projects />} />
+          <Route path="/portfolio/:id" element={<PortfolioView/>} />
         </Route>
       </Routes>
     </>

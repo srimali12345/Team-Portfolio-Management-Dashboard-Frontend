@@ -15,7 +15,7 @@ export const roles = [
 
 export const projects = ["Seer", "Power Intel", "Million Space", "Auxillium"];
 
-export const getColumnsData = (handleDeleteMember, handleAssignProject,handleEditMember) => [
+export const getColumnsData = (handleDeleteMember, handleAssignProject,handleEditMember,handleViewPortfolio) => [
   {
     title: "Full Name",
     dataIndex: "name",
@@ -92,7 +92,7 @@ export const getColumnsData = (handleDeleteMember, handleAssignProject,handleEdi
           Delete
         </Button>
 
-        <Button type="link">Portfolio</Button>
+        <Button type="link" onClick={handleViewPortfolio(record)}>Portfolio</Button>
         {record.status === "bench" && (
           <Button
             type="primary"

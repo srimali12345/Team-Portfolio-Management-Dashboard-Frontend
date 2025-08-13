@@ -46,5 +46,6 @@ export const DASHBOARD_CONSTANTS = {
 export const TEAM_MEMBERS_CONSTANT ={
   TITLE:"Team Members",
   ADD_MEMBER:"Add Member",
-  CLEAR:"Clear"
+  CLEAR:"Clear",
+  PORTFOLIO_TITLE:"Portfolio View",
 }
