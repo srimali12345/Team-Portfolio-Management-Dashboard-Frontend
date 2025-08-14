@@ -1,4 +1,4 @@
-import React, { useState } from "react";
+import React, { useState, useEffect } from "react";
 import { Layout, Menu, Button, Avatar, Typography } from "antd";
 import {
   DashboardOutlined,
@@ -6,35 +6,58 @@ import {
   ProjectOutlined,
   UserOutlined,
   LogoutOutlined,
-  TrophyOutlined,
   ProjectTwoTone,
 } from "@ant-design/icons";
-import { Outlet, useNavigate } from "react-router-dom";
+import { Outlet, useNavigate, useLocation } from "react-router-dom";
+import { useDispatch, useSelector } from "react-redux";
+import { logoutUser } from "../store/slices/authSlice"; // update path if needed
+import toast from "react-hot-toast";
+
 const { Header, Sider, Content } = Layout;
 const { Text } = Typography;
+
 const MainLayout = () => {
-  const [collapsed, setCollapsed] = useState();
+  const [collapsed, setCollapsed] = useState(false);
   const navigate = useNavigate();
+  const location = useLocation();
+  const dispatch = useDispatch();
+
+  const { user, isAuthenticated } = useSelector((state) => state.auth);
+
+  useEffect(() => {
+    if (!isAuthenticated) navigate("/login");
+  }, [isAuthenticated, navigate]);
+
+  const handleLogout = async () => {
+    await dispatch(logoutUser());
+    toast.success("Logged out successfully");
+    navigate("/login");
+  };
+
   const menuItems = [
     {
       key: "1",
       icon: <DashboardOutlined />,
       label: "Dashboard",
-      onClick: () => navigate("/dashboard"),
+      path: "/dashboard",
     },
     {
       key: "2",
       icon: <TeamOutlined />,
       label: "Team Members",
-      onClick: () => navigate("/team-members"),
+      path: "/team-members",
     },
     {
       key: "3",
       icon: <ProjectOutlined />,
       label: "Projects",
-      onClick: () => navigate("/projects"),
+      path: "/projects",
     },
   ];
+
+  const selectedKey = menuItems.find((item) =>
+    location.pathname.startsWith(item.path)
+  )?.key;
 
   return (
     <Layout className="dashboard-layout">
@@ -45,32 +68,43 @@ const MainLayout = () => {
         className="dashboard-sider"
       >
         <div className="logo">
-         <ProjectTwoTone style={{ fontSize: "24px" }} />
+          <ProjectTwoTone style={{ fontSize: "24px" }} />
           {!collapsed && <span>1BT Portfolio Hub</span>}
         </div>
         <Menu
           theme="light"
           mode="vertical"
-          defaultSelectedKeys={["1"]}
-          items={menuItems}
+          selectedKeys={[selectedKey]}
+          items={menuItems.map((item) => ({
+            key: item.key,
+            icon: item.icon,
+            label: item.label,
+            onClick: () => navigate(item.path),
+          }))}
         />
       </Sider>
       <Layout className="site-layout">
         <Header className="dashboard-header">
           <Button
             type="text"
-            icon={collapsed ? <TeamOutlined /> : <TeamOutlined />}
+            icon={<TeamOutlined />}
             onClick={() => setCollapsed(!collapsed)}
             className="trigger"
           />
-
           <div className="header-right">
-            <Avatar icon={<UserOutlined />} />
-            <Text className="header-username">Admin User</Text>
+            <Avatar icon={<UserOutlined />}>
+              {user?.name
+                ?.split(" ")
+                .map((n) => n[0])
+                .join("")}
+            </Avatar>
+            {!collapsed && (
+              <Text className="header-username">{user?.name || "User"}</Text>
+            )}
             <Button
               type="text"
               icon={<LogoutOutlined />}
-              onClick={() => navigate("/login")}
+              onClick={handleLogout}
             >
               Logout
             </Button>

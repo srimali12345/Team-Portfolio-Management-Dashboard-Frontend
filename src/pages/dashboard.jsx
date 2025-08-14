@@ -1,4 +1,6 @@
-import React, { useEffect, useState } from "react";
+import React, { useEffect } from "react";
+import { useDispatch, useSelector } from "react-redux";
+import { useNavigate } from "react-router-dom";
 import {
   Button,
   Card,
@@ -15,46 +17,38 @@ import {
   UserOutlined,
   ProjectOutlined,
 } from "@ant-design/icons";
-import { useNavigate } from "react-router-dom";
-import axios from "axios";
-import "../styles/Dashboard/dashboard.scss";
-import {
-  recentProjects,
-  benchMembers as fallbackBench,
-} from "../data/dashboardData";
 import { DASHBOARD_CONSTANTS } from "../constants";
+import { fetchTeamStats, fetchTeamMembers } from "../store/slices/teamSlices";
+import { fetchProjects } from "../store/slices/projectSlice";
+import "../styles/Dashboard/dashboard.scss";
 
 const { Title, Text } = Typography;
 
 const Dashboard = () => {
+  const dispatch = useDispatch();
   const navigate = useNavigate();
-  const [stats, setStats] = useState({
-    totalMembers: 0,
-    activeMembers: 0,
-    benchMembers: 0,
-  });
-  const [benchList, setBenchList] = useState([]);
+  const user = useSelector((state) => state.auth);
+
+  const {
+    stats,
+    members,
+    isLoading: teamLoading,
+  } = useSelector((state) => state.team);
+  const { projects, isLoading: projectLoading } = useSelector(
+    (state) => state.project
+  );
 
   useEffect(() => {
-    const fetchStats = async () => {
-      try {
-        const res = await axios.get(
-          "http://localhost:8080/api/team/getMemberStats"
-        );
-        setStats(res.data);
+    dispatch(fetchTeamStats());
+    dispatch(fetchTeamMembers({ benchOnly: true }));
+    dispatch(fetchProjects());
+  }, [dispatch]);
 
-        const membersRes = await axios.get(
-          "http://localhost:8080/api/team/getMembers"
-        );
-        const members = membersRes.data[0].members || [];
-        setBenchList(members.filter((m) => m.status === "bench"));
-      } catch (err) {
-        console.error("Error fetching dashboard stats:", err);
-        setBenchList(fallbackBench);
-      }
-    };
-    fetchStats();
-  }, []);
+  const benchList = members.filter((m) => m.status === "bench");
+  const recentProjects = projects.slice(0, 3);
+  const activeProjectsCount = projects.filter(
+    (p) => p.status === "active"
+  ).length;
 
   const statusData = [
     {
@@ -77,7 +71,7 @@ const Dashboard = () => {
     },
     {
       title: "Active Projects",
-      value: 5,
+      value: activeProjectsCount,
       color: "#52c41a",
       icon: <ProjectOutlined />,
     },
@@ -98,7 +92,6 @@ const Dashboard = () => {
                 value={status.value}
                 prefix={status.icon}
                 valueStyle={{ color: status.color }}
-                icon={status.icon}
               />
             </Card>
           </Col>
@@ -116,33 +109,39 @@ const Dashboard = () => {
               </Button>
             }
           >
-            {recentProjects.map((project) => (
-              <div
-                key={project.id}
-                className="project-item"
-                style={{ cursor: "pointer" }}
-                onClick={() => navigate("/projects")}
-              >
-                <div className="project-info">
-                  <Title level={5}>{project.name}</Title>
-                  <Text type="secondary">
-                    {project.team}
-                    {DASHBOARD_CONSTANTS.TEAM_MEMBERS}
-                  </Text>
+            {recentProjects.length > 0 ? (
+              recentProjects.map((project) => (
+                <div
+                  key={project._id}
+                  className="project-item"
+                  style={{ cursor: "pointer" }}
+                  onClick={() => navigate("/projects")}
+                >
+                  <div className="project-info">
+                    <Title level={5}>{project.name}</Title>
+                    <Text type="secondary">
+                      {project.members?.length || 0}{" "}
+                      {DASHBOARD_CONSTANTS.TEAM_MEMBERS}
+                    </Text>
+                  </div>
+                  <div className="project-status">
+                    <Badge
+                      status={
+                        project.status === "active" ? "processing" : "default"
+                      }
+                      text={project.status}
+                    />
+                    <Text className="progress-text">
+                      {project.progress || 0}%
+                    </Text>
+                  </div>
                 </div>
-                <div className="project-status">
-                  <Badge
-                    status={
-                      project.status === "Active" ? "processing" : "default"
-                    }
-                    text={project.status}
-                  />
-                  <Text className="progress-text">
-                    {project.progress} {DASHBOARD_CONSTANTS.PRECENTAGE}
-                  </Text>
-                </div>
+              ))
+            ) : (
+              <div className="text-center py-8 text-muted-foreground">
+                No recent projects
               </div>
-            ))}
+            )}
           </Card>
         </Col>
 
@@ -156,33 +155,39 @@ const Dashboard = () => {
               </Button>
             }
           >
-            {benchList.map((member) => (
-              <div key={member._id} className="member-item">
-                <Avatar icon={<UserOutlined />} />
-                <div className="member-info">
-                  <Title level={5}>{member.name}</Title>
-                  <Text type="secondary">{member.role}</Text>
-                  <div className="skills">
-                    {member.skills.map((skill) => (
-                      <Badge
-                        key={skill}
-                        count={skill}
-                        className="skill-badge"
-                      />
-                    ))}
-                  </div>
-                  <div style={{ marginTop: 8 }}>
-                    <Button
-                      size="small"
-                      type="primary"
-                      onClick={() => navigate("/team-members")}
-                    >
-                      {DASHBOARD_CONSTANTS.ASSIGN_TO_PROJECT}
-                    </Button>
+            {benchList.length > 0 ? (
+              benchList.map((member) => (
+                <div key={member._id} className="member-item">
+                  <Avatar icon={<UserOutlined />} />
+                  <div className="member-info">
+                    <Title level={5}>{member.name}</Title>
+                    <Text type="secondary">{member.role}</Text>
+                    <div className="skills">
+                      {member.skills?.map((skill) => (
+                        <Badge
+                          key={skill}
+                          count={skill}
+                          className="skill-badge"
+                        />
+                      ))}
+                    </div>
+                    <div style={{ marginTop: 8 }}>
+                      <Button
+                        size="small"
+                        type="primary"
+                        onClick={() => navigate("/team-members")}
+                      >
+                        {DASHBOARD_CONSTANTS.ASSIGN_TO_PROJECT}
+                      </Button>
+                    </div>
                   </div>
                 </div>
+              ))
+            ) : (
+              <div className="text-center py-8 text-muted-foreground">
+                No available team members
               </div>
-            ))}
+            )}
           </Card>
         </Col>
       </Row>

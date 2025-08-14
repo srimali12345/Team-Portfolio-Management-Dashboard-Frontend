@@ -1,70 +1,56 @@
-import React, { useState } from "react";
-import { FORM_CONSTANTS } from "../../constants";
-import RegisterForm from "./authFormRegister.jsx";
-import CustomButton from "../../components/buttonComponent.jsx";
-import axios from "../../api/axios";
-import { useNavigate } from "react-router-dom";
-import logo from "../../assets/auth.png";
+import { useState, useEffect } from "react";
+import { useDispatch, useSelector } from "react-redux";
 import toast from "react-hot-toast";
+import { useNavigate } from "react-router-dom";
+import RegisterForm from "./authFormRegister";
+import logo from "../../assets/auth.png";
+import { FORM_CONSTANTS } from "../../constants";
+import { registerUser, clearError } from "../../store/slices/authSlice";
 
 const Register = () => {
+  const dispatch = useDispatch();
+  const navigate = useNavigate();
+  const { isLoading, error, isAuthenticated, user } = useSelector(
+    (state) => state.auth
+  );
+
+  const [name, setName] = useState("");
   const [username, setUsername] = useState("");
   const [email, setEmail] = useState("");
   const [password, setPassword] = useState("");
-  const [name, setName] = useState("");
-  const [role, setRole] = useState("");
-  const navigate = useNavigate();
+  const [role, setRole] = useState("viewer");
 
-  const handleSubmit = async (e) => {
-    if (!username || !name || !email || !password || !role) {
-      e.preventDefault();
-      toast.error("Please fill in all fields.");
-      if (!email.includes("@") && toast.error("Email is invalid"));
-      if (
-        !password ||
-        (password.length < 6 &&
-          toast.error("Password must be at least 6 characters long"))
-      );
+  useEffect(() => {
+    if (isAuthenticated) {
+      toast.success(`Welcome ${user?.name || name}!`);
+      navigate("/dashboard");
+    }
+  }, [isAuthenticated, navigate, user, name]);
 
-      if (!username && toast.error("Username is required"));
-      if (!name && toast.error("Name is required"));
-      if (!email && toast.error("Email is invalid"));
-      if (!password && toast.error("Password is not valid"))
-        if (!role && toast.error("User type is required"));
+  useEffect(() => {
+    return () => {
+      dispatch(clearError());
+    };
+  }, [dispatch]);
+
+  const handleSubmit = async () => {
+    if (!name || !username || !email || !password || !role) {
+      if (!name) toast.error("Name is required");
+      if (!username) toast.error("Username is required");
+      if (!email) toast.error("Email is required");
+      if (!password) toast.error("Password is required");
+      if (!role) toast.error("Role is required");
       return;
     }
-    try {
-      const response = await axios.post(
-        "http://localhost:8080/api/auth/register",
-        {
-          username,
-          email,
-          name,
-          password,
-          role,
-        },
-        { headers: { "Content-Type": "application/json" } }
-      );
 
-      setUsername("");
-      setEmail("");
-      setPassword("");
-      setName("");
-      setRole("");
-      console.log("Registration successful:", response.data);
-      toast.success("Registration successful! You can now log in.");
-      navigate("/login");
-    } catch (error) {
-      if (!error?.response) {
-        console.log("No Server Response");
-      } else if (error.response?.status === 409) {
-        toast.error("Username or Email already exists.");
-      } else {
-        toast.error("Registration failed. Please try again.");
-        console.error("Registration Failed", error);
-      }
+    try {
+      await dispatch(registerUser({ name, email, password, role })).unwrap();
+      toast.success("Registration successful!");
+    } catch (err) {
+      toast.error(err || "Registration failed. Please try again.");
     }
   };
+
   return (
     <div className="main-container">
       <div className="login-background">
@@ -76,25 +62,20 @@ const Register = () => {
         </div>
         <h1 className="auth-title">{FORM_CONSTANTS.REGISTER.TITLE}</h1>
         <p className="auth-subtitle">{FORM_CONSTANTS.REGISTER.SUBTITLE}</p>
+        {error && toast.error(error)}
         <RegisterForm
           name={name}
           username={username}
           email={email}
           password={password}
           role={role}
-          setRole={setRole}
           setName={setName}
-          onFinish={handleSubmit}
           setUsername={setUsername}
           setEmail={setEmail}
           setPassword={setPassword}
+          setRole={setRole}
+          onFinish={handleSubmit}
         />
-        <div className="login-link-container">
-          <p>{FORM_CONSTANTS.LOGIN.LOGIN_LINK_TEXT}</p>
-          <CustomButton className="default-button" href="/login">
-            {FORM_CONSTANTS.LOGIN.TITLE}
-          </CustomButton>
-        </div>
       </div>
     </div>
   );

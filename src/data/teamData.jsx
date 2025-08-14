@@ -15,7 +15,13 @@ export const roles = [
 
 export const projects = ["Seer", "Power Intel", "Million Space", "Auxillium"];
 
-export const getColumnsData = (handleDeleteMember, handleAssignProject,handleEditMember,handleViewPortfolio) => [
+export const getColumnsData = (
+  handleDeleteMember,
+  handleAssignProject,
+  handleEditMember,
+  handleViewPortfolio,
+  isAdmin
+) => [
   {
     title: "Full Name",
     dataIndex: "name",
@@ -26,6 +32,12 @@ export const getColumnsData = (handleDeleteMember, handleAssignProject,handleEdi
         <span style={{ marginLeft: 8 }}>{name}</span>
       </div>
     ),
+  },
+  {
+    title: "Email",
+    dataIndex: "email",
+    key: "email",
+    render: (email) => <Text>{email}</Text>,
   },
   {
     title: "Role",
@@ -76,30 +88,34 @@ export const getColumnsData = (handleDeleteMember, handleAssignProject,handleEdi
     key: "actions",
     render: (_, record) => (
       <Space>
-        <Button onClick={() => {
-          handleEditMember(record);
-        }} type="link" icon={<EditOutlined />}>
-          Edit
-        </Button>
-        <Button
-          onClick={() => {
-            handleDeleteMember(record.id);
-          }}
-          type="link"
-          danger
-          icon={<DeleteOutlined />}
-        >
-          Delete
-        </Button>
-
-        <Button type="link" onClick={() => handleViewPortfolio(record)()}>Portfolio</Button>
-        {record.status === "bench" && (
+        {isAdmin && (
           <Button
-            type="primary"
-            onClick={() => {
-              handleAssignProject(record);
-            }}
+            onClick={() => handleEditMember(record)}
+            type="link"
+            icon={<EditOutlined />}
           >
+            Edit
+          </Button>
+        )}
+        {isAdmin && (
+          <Button
+            onClick={() => handleDeleteMember(record._id)}
+            type="link"
+            danger
+            icon={<DeleteOutlined />}
+          >
+            Delete
+          </Button>
+        )}
+        {record._id ? (
+          <Button type="link" onClick={() => handleViewPortfolio(record._id)}>
+            Portfolio
+          </Button>
+        ) : (
+          <Text type="warning">No ID</Text>
+        )}
+        {isAdmin && record.status === "bench" && (
+          <Button type="primary" onClick={() => handleAssignProject(record)}>
             Assign to Project
           </Button>
         )}

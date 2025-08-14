@@ -1,38 +1,37 @@
 import React from "react";
 import { FORM_CONSTANTS } from "../../constants";
-import { Form,Select} from "antd";
+import { Form, Select } from "antd";
 import CustomInput from "../../components/inputComponent";
 import CustomButton from "../../components/buttonComponent";
+
+const { Option } = Select;
+
 const RegisterForm = ({
+  name,
   username,
   email,
-  name,
   password,
   role,
-  setRole,
   setName,
-  setEmail,
   setUsername,
+  setEmail,
   setPassword,
+  setRole,
   onFinish,
   validateMessages,
-  
 }) => {
-  const {Option}= Select
   return (
     <Form
       name="register"
+      layout="vertical"
       onFinish={onFinish}
-      onFinishFailed={(errorInfo) => {
-        console.log("Failed:", errorInfo);
-      }}
+      onFinishFailed={(errorInfo) => console.log("Failed:", errorInfo)}
       validateTrigger="onChange"
       className="auth-form"
       requiredMark={true}
       validateMessages={validateMessages}
-      layout="vertical"
     >
-       <Form.Item
+      <Form.Item
         label={FORM_CONSTANTS.COMMON.NAME}
         name={FORM_CONSTANTS.COMMON.NAME}
         rules={[
@@ -51,7 +50,7 @@ const RegisterForm = ({
           placeholder={FORM_CONSTANTS.COMMON.NAME}
         />
       </Form.Item>
-      
+
       <Form.Item
         label={FORM_CONSTANTS.COMMON.USERNAME_LABEL}
         name={FORM_CONSTANTS.COMMON.USERNAME_LABEL}
@@ -90,6 +89,7 @@ const RegisterForm = ({
           placeholder={FORM_CONSTANTS.COMMON.EMAIL_LABEL}
         />
       </Form.Item>
+
       <Form.Item
         name={FORM_CONSTANTS.COMMON.PASSWORD_LABEL}
         label={FORM_CONSTANTS.COMMON.PASSWORD_LABEL}
@@ -97,7 +97,6 @@ const RegisterForm = ({
           {
             required: true,
             message: FORM_CONSTANTS.COMMON.ERROR_MESSAGE_PASSWORD,
-            type: "",
           },
         ]}
       >
@@ -108,7 +107,8 @@ const RegisterForm = ({
           placeholder={FORM_CONSTANTS.COMMON.PASSWORD_LABEL}
         />
       </Form.Item>
-        <Form.Item
+
+      <Form.Item
         name={FORM_CONSTANTS.COMMON.USER_TYPE}
         label={FORM_CONSTANTS.COMMON.USER_TYPE}
         rules={[
@@ -118,15 +118,23 @@ const RegisterForm = ({
           },
         ]}
       >
-        <Select placeholder="Select user type" value={role} onChange={(value)=>setRole(value)}>
-              <Option value="admin">Admin</Option>
-              <Option value="viewer">Viewer</Option>
-            </Select>
+        <Select
+          placeholder="Select user type"
+          value={role}
+          onChange={(value) => setRole(value)}
+        >
+          <Option value="admin">Admin</Option>
+          <Option value="viewer">Viewer</Option>
+        </Select>
       </Form.Item>
 
       <div className="button-container">
-        <CustomButton className="secondary-button">
+        <CustomButton className="secondary-button" htmlType="submit">
           {FORM_CONSTANTS.REGISTER.TITLE}
+        </CustomButton>
+
+        <CustomButton className="default-button" href="/login">
+          {FORM_CONSTANTS.LOGIN.TITLE}
         </CustomButton>
       </div>
     </Form>

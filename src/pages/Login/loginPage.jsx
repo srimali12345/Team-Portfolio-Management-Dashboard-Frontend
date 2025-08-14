@@ -1,53 +1,48 @@
-import { useState } from "react";
-import axios from "../../api/axios";
+import { useState, useEffect } from "react";
+import { useDispatch, useSelector } from "react-redux";
 import toast from "react-hot-toast";
+import { useNavigate } from "react-router-dom";
 import LoginForm from "./authFormLogin";
 import logo from "../../assets/auth.png";
 import { FORM_CONSTANTS } from "../../constants";
-import { useNavigate } from "react-router-dom";
-
-const LOGIN_URL = "http://localhost:8080/api/auth/login";
+import { loginUser, clearError } from "../../store/slices/authSlice";
 
 const Login = () => {
-  const [username, setUsername] = useState("");
-  const [password, setPassword] = useState("");
-  const [sucess, setSuccess] = useState(false);
-  const [role, setRole] = useState("");
+  const dispatch = useDispatch();
   const navigate = useNavigate();
+  const { isLoading, error, isAuthenticated, user } = useSelector(
+    (state) => state.auth
+  );
 
-  const handleSubmit = async (e) => {
-    if (!username || !password || !role) {
-      if (!username) toast.error("Username is required");
+  const [email, setEmail] = useState("");
+  const [password, setPassword] = useState("");
+
+  useEffect(() => {
+    if (isAuthenticated) {
+      toast.success(`Welcome ${user?.name || email}!`);
+      navigate("/dashboard");
+    }
+  }, [isAuthenticated, navigate, user, email]);
+
+  useEffect(() => {
+    return () => {
+      dispatch(clearError());
+    };
+  }, [dispatch]);
+
+  const handleSubmit = async () => {
+    if (!email || !password) {
+      if (!email) toast.error("Email is required");
       if (!password) toast.error("Password is required");
-      if (!role) toast.error("Role is required");
       return;
     }
     try {
-      const response = await axios.post(LOGIN_URL, {
-        username,
-        password,
-        role,
-      });
-      console.log(response.data);
-      setSuccess(true);
-      setUsername("");
-      setPassword("");
-      setRole(response.data.role);
-      console.log("Login successful:", response.data);
-      toast.success("Login successful!");
-      navigate("/dashboard");
-    } catch (error) {
-      if (!error?.response) {
-        toast.error("No server response");
-      } else if (error.response?.status === 401) {
-        toast.error("Invalid username or password");
-      } else if (error.response?.status === 403) {
-        toast.error("Invalid role");
-      } else {
-        toast.error("Login failed");
-      }
+      await dispatch(loginUser({ email, password })).unwrap();
+    } catch (err) {
+      toast.error(err || "Login failed. Please check your credentials.");
     }
   };
+
   return (
     <div className="main-container">
       <div className="login-background">
@@ -59,15 +54,13 @@ const Login = () => {
         </div>
         <h1 className="auth-title">{FORM_CONSTANTS.LOGIN.TITLE}</h1>
         <p className="auth-subtitle">{FORM_CONSTANTS.LOGIN.SUBTITLE}</p>
-
+        {error && toast.error(error)}
         <LoginForm
-          username={username}
+          email={email}
           password={password}
-          role={role}
-          setUsername={setUsername}
+          setEmail={setEmail}
           setPassword={setPassword}
           onFinish={handleSubmit}
-          setRole={setRole}
         />
       </div>
     </div>
