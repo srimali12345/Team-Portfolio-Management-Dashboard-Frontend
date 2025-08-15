@@ -79,7 +79,7 @@ The application follows a **modular frontend architecture** to ensure maintainab
   **Axios** handles HTTP requests to the backend for dynamic data operations.
 
 - **Authentication & Authorization:**  
-  Role-based access (Admin & Viewer) is enforced using JWT tokens or a similar mechanism.
+  Role-based access (Admin & Viewer) is enforced using JWT tokens  mechanism.
 
 - **Code Quality:**  
   **ESLint** ensures a consistent coding style and avoids common errors.
