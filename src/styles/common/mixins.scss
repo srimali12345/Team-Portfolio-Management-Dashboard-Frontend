@@ -1,0 +1,18 @@
+@use '../../styles/common/variables.scss' as *;
+
+@mixin flexbox(
+  $direction: row,
+  $justify: flex-start,
+  $align: stretch,
+) {
+  display: flex !important;
+  flex-direction: $direction !important;
+  justify-content: $justify !important;
+  align-items: $align !important;
+}
+
+@mixin card-style {
+  background:$white;
+  border-radius: 8px;
+  border: 1px solid var(--border-light);
+}
