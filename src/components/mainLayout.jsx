@@ -10,8 +10,9 @@ import {
 } from "@ant-design/icons";
 import { Outlet, useNavigate, useLocation } from "react-router-dom";
 import { useDispatch, useSelector } from "react-redux";
-import { logoutUser } from "../store/slices/authSlice"; // update path if needed
+import { logoutUser } from "../store/slices/authSlice";
 import toast from "react-hot-toast";
+import { DASHBOARD_CONSTANTS } from "../constants";
 
 const { Header, Sider, Content } = Layout;
 const { Text } = Typography;
@@ -31,7 +32,7 @@ const MainLayout = () => {
   const handleLogout = async () => {
     await dispatch(logoutUser());
     toast.success("Logged out successfully");
-    navigate("/login");
+    navigate("/");
   };
 
   const menuItems = [
@@ -69,7 +70,7 @@ const MainLayout = () => {
       >
         <div className="logo">
           <ProjectTwoTone style={{ fontSize: "24px" }} />
-          {!collapsed && <span>1BT Portfolio Hub</span>}
+          {!collapsed && <span>{DASHBOARD_CONSTANTS.PORTFOLIO_HUB}</span>}
         </div>
         <Menu
           theme="light"
@@ -106,7 +107,7 @@ const MainLayout = () => {
               icon={<LogoutOutlined />}
               onClick={handleLogout}
             >
-              Logout
+              {DASHBOARD_CONSTANTS.LOGOUT}
             </Button>
           </div>
         </Header>

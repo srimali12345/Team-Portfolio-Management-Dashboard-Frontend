@@ -7,11 +7,13 @@ import TeamMembers from "./pages/teamMembers.jsx";
 import Projects from "./pages/projects.jsx";
 import MainLayout from "./components/mainLayout.jsx";
 import PortfolioView from "./pages/portfolioView.jsx";
+import HomePage from "./pages/home.jsx";
 
 const AppRoutes = () => {
   return (
     <>
       <Routes>
+        <Route path='/' element={<HomePage/>}/>
         <Route path="/login" element={<Login />} />
         <Route path="/register" element={<Register />} />
 
@@ -20,6 +22,7 @@ const AppRoutes = () => {
           <Route path="/team-members" element={<TeamMembers />} />
           <Route path="/projects" element={<Projects />} />
           <Route path="/portfolio/:id" element={<PortfolioView/>} />
+
         </Route>
       </Routes>
     </>

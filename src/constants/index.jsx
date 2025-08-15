@@ -16,7 +16,7 @@ export const FORM_CONSTANTS = {
     MESSAGE_PASSWORD: "Please input your password!",
     MESSAGE_USER_TYPE: "Please select a user type!",
     MESSAGE_NAME: "Please input your Name!",
-    NAME: "Name"
+    NAME: "Name",
   },
   LOGIN: {
     TITLE: "Login",
@@ -39,13 +39,40 @@ export const DASHBOARD_CONSTANTS = {
   PROGRESS_TEXT: "Progress",
   ACTIVE_STATUS: "Active",
   INACTIVE_STATUS: "Inactive",
-  TEAM_MEMBERS:'team members',
-  PRECENTAGE:'% complete'
+  TEAM_MEMBERS: "team members",
+  PRECENTAGE: "% complete",
+  PORTFOLIO_HUB: "1BT Portfolio Hub",
+  LOGOUT: "Logout",
+  NO_PROJECTS: "No recent projects",
+  NO_MEMBERS: "No available team members",
 };
 
-export const TEAM_MEMBERS_CONSTANT ={
-  TITLE:"Team Members",
-  ADD_MEMBER:"Add Member",
-  CLEAR:"Clear",
-  PORTFOLIO_TITLE:"Portfolio View",
-}
+export const TEAM_MEMBERS_CONSTANT = {
+  TITLE: "Team Members",
+  ADD_MEMBER: "Add Member",
+  CLEAR: "Clear",
+  PORTFOLIO_TITLE: "Portfolio View",
+  ONBENCH: "On Bench",
+  PORTFOLIO: "Portfolio",
+  NOID: "No ID",
+  SHOW_BENCH: "Show Bench Members",
+};
+
+export const HOME_CONSTANT = {
+  WELCOME: "Welcome to Our Platform",
+  MANAGE_PROJECTS:
+    "Manage Your Projects, Team Members, And Portfolios With Ease.",
+};
+
+export const COMMON = {
+  EDIT: "Edit",
+  DELETE: "Delete",
+  MOVE_TO_WORK: "Move to Working",
+};
+
+export const PROJECT = {
+  PROJECT_MANAGEMENT: "Project Management",
+  ADD_PROJECT: "Add Project",
+  ACTIVE: "Active",
+  UPCOMING: "Upcoming",
+};

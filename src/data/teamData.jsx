@@ -1,5 +1,10 @@
 import { Avatar, Tag, Space, Badge, Button, Typography } from "antd";
 import { UserOutlined, EditOutlined, DeleteOutlined } from "@ant-design/icons";
+import {
+  COMMON,
+  DASHBOARD_CONSTANTS,
+  TEAM_MEMBERS_CONSTANT,
+} from "../constants";
 
 const { Text } = Typography;
 
@@ -16,7 +21,7 @@ export const roles = [
 export const projects = ["Seer", "Power Intel", "Million Space", "Auxillium"];
 
 export const getColumnsData = (
-  handleDeleteMember,
+  handleDelete,
   handleAssignProject,
   handleEditMember,
   handleViewPortfolio,
@@ -69,8 +74,9 @@ export const getColumnsData = (
       currentProject ? (
         <Text>{currentProject}</Text>
       ) : (
-        <Tag color="orange">On Bench</Tag>
+        <Tag color="orange">{TEAM_MEMBERS_CONSTANT.ONBENCH}</Tag>
       ),
+    width: 200,
   },
   {
     title: "Status",
@@ -94,29 +100,29 @@ export const getColumnsData = (
             type="link"
             icon={<EditOutlined />}
           >
-            Edit
+            {COMMON.EDIT}
           </Button>
         )}
         {isAdmin && (
           <Button
-            onClick={() => handleDeleteMember(record._id)}
+            onClick={() => handleDelete(record._id)}
             type="link"
             danger
             icon={<DeleteOutlined />}
           >
-            Delete
+            {COMMON.DELETE}
           </Button>
         )}
         {record._id ? (
           <Button type="link" onClick={() => handleViewPortfolio(record._id)}>
-            Portfolio
+            {TEAM_MEMBERS_CONSTANT.PORTFOLIO}
           </Button>
         ) : (
-          <Text type="warning">No ID</Text>
+          <Text type="warning">{TEAM_MEMBERS_CONSTANT.NOID}</Text>
         )}
         {isAdmin && record.status === "bench" && (
           <Button type="primary" onClick={() => handleAssignProject(record)}>
-            Assign to Project
+            {DASHBOARD_CONSTANTS.ASSIGN_TO_PROJECT}
           </Button>
         )}
       </Space>

@@ -1,95 +1,57 @@
-import React, { useEffect, useState } from "react";
-import { useParams, Link } from "react-router-dom";
-import {
-  Typography,
-  Card,
-  Avatar,
-  Tag,
-  Divider,
-  Descriptions,
-  Space,
-  Button,
-} from "antd";
-import { CaretLeftOutlined, UserOutlined } from "@ant-design/icons";
-import axios from "axios";
+import React, { useEffect } from "react";
+import { useDispatch, useSelector } from "react-redux";
+import { useParams, useNavigate } from "react-router-dom";
+import { Card, Table, Button, Typography } from "antd";
+import { fetchPortfolio, clearPortfolio } from "../store/slices/teamSlices";
 import { TEAM_MEMBERS_CONSTANT } from "../constants";
 
-const { Title, Text } = Typography;
+const { Title } = Typography;
 
 const PortfolioView = () => {
   const { id } = useParams();
-  const [portfolio, setPortfolio] = useState({});
+  const dispatch = useDispatch();
+  const navigate = useNavigate();
+  const { portfolio, isLoading } = useSelector((state) => state.team);
 
   useEffect(() => {
-    const fetchPortfolio = async () => {
-      try {
-        const res = await axios.get(
-          `http://localhost:8080/api/team/portfolio/${id}`
-        );
-        setPortfolio(res.data);
-        console.log("Portfolio data:", res.data);
-      } catch (err) {
-        console.error("Error fetching portfolio:", err);
-      }
+    dispatch(fetchPortfolio(id));
+
+    return () => {
+      dispatch(clearPortfolio());
     };
-    fetchPortfolio();
-  }, [id]);
+  }, [dispatch, id]);
+
+  const columns = [
+    { title: "Project Name", dataIndex: "name", key: "name" },
+    { title: "Role", dataIndex: "role", key: "role" },
+    {
+      title: "Start Date",
+      dataIndex: "startDate",
+      key: "startDate",
+      render: (date) => new Date(date).toLocaleDateString(),
+    },
+    {
+      title: "End Date",
+      dataIndex: "endDate",
+      key: "endDate",
+      render: (date) => new Date(date).toLocaleDateString(),
+    },
+  ];
 
   return (
     <div className="dashboard-content">
-      <div className="page-header">
-        <Title level={2}>{TEAM_MEMBERS_CONSTANT.PORTFOLIO_TITLE}</Title>
-        <Button type="link" icon={<CaretLeftOutlined />}>
-          <Link to="/team-members">Back To Team Members</Link>
-        </Button>
-      </div>
-
-      <Card className="portfolio-card">
-        <Space align="center" size={20} className="portfolio-header">
-          <Avatar size={80} icon={<UserOutlined />} />
-          <div className="portfolio-header-text">
-            <Title level={3} className="portfolio-name">
-              {portfolio.name || "N/A"}
-            </Title>
-            <Text type="secondary">{portfolio.role || "No role assigned"}</Text>
-            <div className="portfolio-email">
-              <Text>{portfolio.email || "No email provided"}</Text>
-            </div>
-          </div>
-        </Space>
-
-        <Divider />
-
-        <Descriptions column={1} labelStyle={{ fontWeight: "bold" }}>
-          <Descriptions.Item label="Current Project">
-            {portfolio.currentProject || "Not Assigned"}
-          </Descriptions.Item>
-
-          <Descriptions.Item label="Skills">
-            {Array.isArray(portfolio.skills)
-              ? portfolio.skills.map((skill, index) => (
-                  <Tag key={index} color="blue" className="skill-tag">
-                    {skill}
-                  </Tag>
-                ))
-              : typeof portfolio.skills === "string"
-              ? portfolio.skills.split(",").map((skill, index) => (
-                  <Tag key={index} color="blue" className="skill-tag">
-                    {skill.trim()}
-                  </Tag>
-                ))
-              : "No skills listed"}
-          </Descriptions.Item>
-
-          <Descriptions.Item label="Status">
-            <Tag
-              color={portfolio.status === "Active" ? "green" : "red"}
-              className="status-tag"
-            >
-              {portfolio.status || "Unknown"}
-            </Tag>
-          </Descriptions.Item>
-        </Descriptions>
+      <Button onClick={() => navigate(-1)} style={{ marginBottom: 20 }}>
+        Back
+      </Button>
+      <Card>
+        <Title level={3}>{TEAM_MEMBERS_CONSTANT.PORTFOLIO}</Title>
+        <Table
+          columns={columns}
+          dataSource={portfolio || []}
+          rowKey={(record) => record._id || record.id}
+          loading={isLoading}
+          pagination={false}
+        />
       </Card>
     </div>
   );

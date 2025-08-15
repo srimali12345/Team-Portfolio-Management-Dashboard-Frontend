@@ -139,7 +139,7 @@ const Dashboard = () => {
               ))
             ) : (
               <div className="text-center py-8 text-muted-foreground">
-                No recent projects
+                {DASHBOARD_CONSTANTS.NO_PROJECTS}
               </div>
             )}
           </Card>
@@ -185,7 +185,7 @@ const Dashboard = () => {
               ))
             ) : (
               <div className="text-center py-8 text-muted-foreground">
-                No available team members
+                {DASHBOARD_CONSTANTS.NO_MEMBERS}
               </div>
             )}
           </Card>

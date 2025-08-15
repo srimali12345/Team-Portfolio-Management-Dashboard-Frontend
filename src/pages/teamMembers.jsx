@@ -173,8 +173,7 @@ const TeamMembers = () => {
   };
 
   const handleViewPortfolio = (member) => {
-    console.log("Navigating to portfolio with:", member);
-    navigate(`/portfolio/${member._id}`, { state: { member } });
+    navigate(`/portfolio/${member._id}`);
   };
 
   return (
@@ -242,7 +241,7 @@ const TeamMembers = () => {
                 handleFilterChange("benchOnly", e.target.checked)
               }
             >
-              Show Bench Members
+              {TEAM_MEMBERS_CONSTANT.SHOW_BENCH}
             </Checkbox>
           </Col>
           <Col xs={24} sm={12} md={8} lg={6}>

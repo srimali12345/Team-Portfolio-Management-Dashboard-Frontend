@@ -20,6 +20,7 @@ import {
   activateProject,
   setStatusFilter,
 } from "../store/slices/projectSlice";
+import { COMMON, PROJECT } from "../constants";
 
 const { Title } = Typography;
 const { Option } = Select;
@@ -139,11 +140,13 @@ const Projects = () => {
       render: (_, record) => (
         <Space>
           {isAdmin && (
-            <Button onClick={() => handleEditProject(record)}>Edit</Button>
+            <Button onClick={() => handleEditProject(record)}>
+              {COMMON.EDIT}
+            </Button>
           )}
           {isAdmin && (
             <Button danger onClick={() => handleDeleteProject(record._id)}>
-              Delete
+              {COMMON.DELETE}
             </Button>
           )}
           {record.status === "upcoming" && (
@@ -151,7 +154,7 @@ const Projects = () => {
               type="primary"
               onClick={() => handleActivateProject(record._id)}
             >
-              Move to Working
+              {COMMON.MOVE_TO_WORK}
             </Button>
           )}
         </Space>
@@ -167,10 +170,10 @@ const Projects = () => {
   return (
     <div className="dashboard-content">
       <div className="page-header">
-        <Title level={2}>Project Management</Title>
+        <Title level={2}>{PROJECT.PROJECT_MANAGEMENT}</Title>
         {isAdmin && (
           <Button type="primary" onClick={handleAddProject}>
-            Add Project
+            {PROJECT.ADD_PROJECT}
           </Button>
         )}
       </div>
@@ -182,8 +185,8 @@ const Projects = () => {
           onChange={(value) => dispatch(setStatusFilter(value))}
           style={{ width: 200 }}
         >
-          <Option value="active">Active</Option>
-          <Option value="upcoming">Upcoming</Option>
+          <Option value="active">{PROJECT.ACTIVE}</Option>
+          <Option value="upcoming">{PROJECT.UPCOMING}</Option>
         </Select>
       </Card>
 
@@ -227,8 +230,8 @@ const Projects = () => {
           </Form.Item>
           <Form.Item name="status" label="Status">
             <Select>
-              <Option value="upcoming">Upcoming</Option>
-              <Option value="active">Active</Option>
+              <Option value="upcoming">{PROJECT.UPCOMING}</Option>
+              <Option value="active">{PROJECT.ACTIVE}</Option>
             </Select>
           </Form.Item>
           <Form.Item name="members" label="Assign Members">

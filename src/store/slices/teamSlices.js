@@ -111,18 +111,14 @@ export const deleteTeamMember = createAsyncThunk(
   }
 );
 
-export const fetchMemberPortfolio = createAsyncThunk(
+export const fetchPortfolio = createAsyncThunk(
   "team/fetchPortfolio",
-  async (id, { rejectWithValue }) => {
+  async (id, thunkAPI) => {
     try {
-      const response = await axios.get(
-        `http://localhost:8080/api/team/portfolio/${id}`
-      );
+      const response = await axios.get(`/api/team/portfolio/${id}`);
       return response.data;
-    } catch (error) {
-      return rejectWithValue(
-        error.response?.data?.message || "Failed to fetch portfolio"
-      );
+    } catch (err) {
+      return thunkAPI.rejectWithValue(err.response.data);
     }
   }
 );
@@ -172,16 +168,15 @@ const teamSlice = createSlice({
       .addCase(deleteTeamMember.fulfilled, (state, action) => {
         state.members = state.members.filter((m) => m._id !== action.payload);
       })
-      .addCase(fetchMemberPortfolio.pending, (state) => {
+      .addCase(fetchPortfolio.pending, (state) => {
         state.isLoading = true;
         state.error = null;
-        state.portfolio = null;
       })
-      .addCase(fetchMemberPortfolio.fulfilled, (state, action) => {
+      .addCase(fetchPortfolio.fulfilled, (state, action) => {
         state.isLoading = false;
         state.portfolio = action.payload;
       })
-      .addCase(fetchMemberPortfolio.rejected, (state, action) => {
+      .addCase(fetchPortfolio.rejected, (state, action) => {
         state.isLoading = false;
         state.error = action.payload;
       });

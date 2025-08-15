@@ -1,4 +1,5 @@
 @use "../../styles/common/global.scss" as *;
+@use "../../styles/common/variables.scss" as *;
 
 * {
   padding: 0;
@@ -16,4 +17,61 @@
   border-radius: 6px;
   cursor: pointer;
   padding: 15px !important;
+}
+
+.home-page {
+  .banner {
+    background-image: url("../../assets/banner.jpg");
+    background-size: cover;
+    background-position: center;
+    height: 100vh;
+    position: relative;
+
+    .overlay {
+      background-color: rgba(0, 0, 0, 0.55);
+      height: 100%;
+      display: flex;
+      flex-direction: column;
+      align-items: center;
+      justify-content: center;
+      text-align: center;
+      color: $white;
+      padding: 0 20px;
+    }
+
+    .title {
+      font-size: 3rem;
+      font-weight: 700;
+      margin-bottom: 15px;
+    }
+
+    .subtitle {
+      font-size: 1.25rem;
+      margin-bottom: 30px;
+      max-width: 600px;
+    }
+
+    .button-group {
+      display: flex;
+      gap: 15px;
+
+      .custom-button {
+        padding: 12px 30px !important;
+        border-radius: 6px;
+        font-size: 1rem;
+        text-decoration: none;
+        font-weight: 600;
+      }
+
+      .login-btn {
+        background-color: $secondary-bg;
+        color: $text-primary;
+      }
+
+      .signup-btn {
+        background-color: $secondary-color;
+        color: $white;
+      }
+    }
+  }
 }
