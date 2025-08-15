@@ -51,16 +51,52 @@ We follow a simple Git branching model to ensure clean, manageable code collabor
 
 ## 🏗️ Overview of Architecture & Design Choices
 
-The application follows a **modular architecture** with clear separation of concerns:
+The application follows a **modular frontend architecture** to ensure maintainability, scalability, and clear separation of concerns. While the project is deployed as a single codebase (monolithic in deployment), it is **structured into independent, reusable modules**, which makes development and testing easier.
 
-- **Frontend Framework:** React 19 for UI rendering, using functional components with hooks.
-- **State Management:** Redux Toolkit for predictable and scalable state handling.
-- **Routing:** React Router v7 for client-side navigation.
-- **Styling:** SCSS for component-level styling with variables and mixins for maintainability.
-- **API Communication:** Axios for HTTP requests to the backend.
-- **Authentication:** Role-based access (Admin & Viewer) handled via JWT tokens (or similar).
-- **Code Quality:** ESLint for linting, ensuring a consistent coding style.
-- **Performance:** Vite for fast development and optimized production builds.
+### Key Design Decisions
+
+- **Frontend Framework:**  
+  Built with **React 19**, using functional components and hooks for clean, modern UI development.
+
+- **Modular Structure:**  
+  The codebase is organized into self-contained modules:
+
+  - `auth/` → authentication logic and components
+  - `components/` → reusable UI elements
+  - `pages/` → page-level views (Dashboard, Login, etc.)
+  - `store/` → feature-based Redux slices for predictable state management
+
+- **State Management:**  
+  **Redux Toolkit** is used for centralized, predictable, and scalable state handling.
+
+- **Routing:**  
+  **React Router v7** enables client-side navigation between pages.
+
+- **Styling:**  
+  **SCSS** is used for component-level styling, with variables and mixins for maintainability.
+
+- **API Communication:**  
+  **Axios** handles HTTP requests to the backend for dynamic data operations.
+
+- **Authentication & Authorization:**  
+  Role-based access (Admin & Viewer) is enforced using JWT tokens or a similar mechanism.
+
+- **Code Quality:**  
+  **ESLint** ensures a consistent coding style and avoids common errors.
+
+- **Performance & Build:**  
+  **Vite** provides fast development builds and optimized production bundles.
+
+### Why Modular Architecture?
+
+Even though the frontend is deployed as a single application (monolithic), modular architecture helps:
+
+- Keep code organized and easy to understand
+- Develop and test features independently
+- Reuse components across multiple pages
+- Scale the application without creating tightly coupled code
+
+This structure ensures that as the application grows, it remains maintainable, readable, and extendable.
 
 ---
 
@@ -96,6 +132,5 @@ npm run dev
 - Assign & Manage People (Add/Remove from Projects)
 - Role-based Access Control
 - API integration with a real backend (No mock data)
-  
 
 Visit `http://localhost:5173` to view the app in the browser.
